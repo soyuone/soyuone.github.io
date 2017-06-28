@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "myeclipse在windows平台的安装及使用"
-categories: myeclipse
-tags: myeclipse windows
+categories: IDE
+tags: IDE myeclipse windows
 author: Kopite
 ---
 
@@ -30,17 +30,17 @@ myeclipse enterprise workbench`版本号2015 Stable 2.0`在windows平台的安�
 ## 生成Persistent Object
 
 * myeclipse中新建`JPA Project`，如下图所示<br>
-![](/image/2017/2017-05-18-myeclipse-windows-1.png)
+![](/image/2017/2017-05-18-ide-myeclipse-windows-1.png)
 * 在Window菜单中选择`Open Perspective`，选择`MyEclipse Database Explorer`
 * 右键`New`，选择Driver template，填入Driver name、Connection URL、User name、Password，在Add JARs中添加mysql-connector-java-5.1.38.jar，并选择适宜的Driver classname，如下图所示<br>
-![](/image/2017/2017-05-18-myeclipse-windows-2.png)
+![](/image/2017/2017-05-18-ide-myeclipse-windows-2.png)
 * 单击Test Driver，提示如下<br>
-![](/image/2017/2017-05-18-myeclipse-windows-3.png)
+![](/image/2017/2017-05-18-ide-myeclipse-windows-3.png)
 * 找到要生成Persistent Object的数据库，如下图所示<br>
-![](/image/2017/2017-05-18-myeclipse-windows-4.png)
+![](/image/2017/2017-05-18-ide-myeclipse-windows-4.png)
 * 选中要生成Persistent Object的表，按住Ctrl键可以同时选择多个表，右键选择`JPA Reverse Engineering...`<br>
-![](/image/2017/2017-05-18-myeclipse-windows-5.png)
-![](/image/2017/2017-05-18-myeclipse-windows-6.png)	
+![](/image/2017/2017-05-18-ide-myeclipse-windows-5.png)
+![](/image/2017/2017-05-18-ide-myeclipse-windows-6.png)	
 * 最后选择`Finish`，生成的一个Persistent Object如下所示
 
 TbUser.java

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "WebStorm在windows平台的安装及使用"
-categories: JetBrains
-tags: JetBrains WebStorm windows
+categories: IDE
+tags: IDE WebStorm windows
 author: Kopite
 ---
 

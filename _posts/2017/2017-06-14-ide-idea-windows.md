@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "IntelliJ IDEA在windows平台的安装及使用"
-categories: JetBrains
-tags: JetBrains IDEA windows
+categories: IDE
+tags: IDE IDEA windows
 author: Kopite
 ---
 
