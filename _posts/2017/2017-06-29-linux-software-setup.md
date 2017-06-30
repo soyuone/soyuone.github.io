@@ -292,7 +292,7 @@ CentOS-CR.repo    CentOS-fasttrack.repo  CentOS-Sources.repo
 #### 查询
 
 * `yum list`，查询服务器上所有可用软件包列表
-* `yum search关键字`，搜索服务器上所有和关键字相关的包
+* `yum search 关键字`，搜索服务器上所有和关键字相关的包
 
 ```
 [root@localhost songyu]# yum search jdk

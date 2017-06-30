@@ -151,6 +151,12 @@ Java(TM) SE Runtime Environment (build 1.7.0_80-b15)
 Java HotSpot(TM) 64-Bit Server VM (build 24.80-b11, mixed mode)
 ```
 
+* 删除`/usr/local/`路径下的rpm安装包：
+
+```
+[root@localhost local]# rm -rf jdk-7u80-linux-x64.rpm 
+```
+
 ## 卸载
 
 查询Linux中安装的jdk：
