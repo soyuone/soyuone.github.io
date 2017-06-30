@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "tomcat在Linux平台的常用配置"
+title: "tomcat在Linux平台的安装和配置"
 categories: tomcat
 tags: tomcat Linux CentOS
 author: Kopite
@@ -10,7 +10,7 @@ author: Kopite
 {:toc}
 
 
-tomcat`版本号Apache Tomcat/7.0.78`在Linux平台的常用配置，安装tomcat之前需要预先安装jdk。
+tomcat`版本号Apache Tomcat/7.0.78`在Linux平台的安装和配置，安装tomcat之前需要预先安装jdk。
 
 
 
