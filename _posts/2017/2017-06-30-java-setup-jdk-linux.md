@@ -17,7 +17,7 @@ jdk`版本号1.7.0_80`在Linux平台的安装和配置。
 ## 安装
 
 * 到oracle官网下载[jdk-7u80-linux-x64.rpm](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
-* 使用[Bitvise SSH Client](https://www.bitvise.com/ssh-client)工具将下载的rpm包复制到`/usr/local/`路径，复制完毕后到查看该路径下是否有rpm包
+* 使用[Bitvise SSH Client](https://www.bitvise.com/ssh-client)工具将下载的rpm包复制到`/usr/local/`路径，复制完毕后到查看该路径下是否有rpm包：
 
 ```
 [root@localhost local]# ls -l
