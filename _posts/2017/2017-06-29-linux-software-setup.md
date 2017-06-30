@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Linux中软件安装"
+title: "Linux软件安装管理"
 categories: Linux
 tags: Linux CentOS
 author: Kopite
@@ -10,7 +10,10 @@ author: Kopite
 {:toc}
 
 
-Windows中的软件在Linux中无法安装，并且生产环境下的Linux服务器通常没有图形用户界面，需要在字符界面下安装软件。
+Windows中的软件在Linux中无法安装。
+<br>
+<br>
+生产环境下的Linux服务器通常没有图形用户界面，需要在字符界面下安装软件。
 
 
 
@@ -74,10 +77,17 @@ rpm包的依赖关系：
 
 ### 安装
 
-`rpm -ivh 包全名`，选项：
-* `-i`，安装
-* `-v`，显示详细信息
-* `-h`，显示进度
+* `rpm -ivh 包全名`，选项：
+  * `-i`，安装
+  * `-v`，显示详细信息
+  * `-h`，显示进度
+
+* rpm包默认的安装位置，不建议指定安装位置：
+  * `/etc/`，配置文件安装目录
+  * `/usr/bin/`，可执行的命令安装目录
+  * `/usr/lib/`，程序所使用的函数库保存位置
+  * `/usr/share/doc/`，基本的软件使用手册保存位置
+  * `/usr/share/man/`，帮助文件保存位置
 
 ```
 [root@localhost Packages]# rpm -ivh httpd-2.4.6-40.el7.centos.x86_64.rpm 
@@ -85,6 +95,11 @@ rpm包的依赖关系：
 错误：依赖检测失败：
 	/etc/mime.types 被 httpd-2.4.6-40.el7.centos.x86_64 需要
 	httpd-tools = 2.4.6-40.el7.centos 被 httpd-2.4.6-40.el7.centos.x86_64 需要
+```
+
+```
+[root@localhost songyu]# rpm --help | grep prefix
+  --prefix=<dir>                   如果可重定位，便把软件包重定位到 <dir>
 ```
 
 ### 升级
@@ -169,13 +184,6 @@ from the same family as dialog, Xdialog, and cdialog.
 * `rpm -ql 包名`，查询包中文件的安装位置，选项：
   * `-l`，列表
   * `-p`，查询未安装的软件包打算把包中文件安装的位置
-
-* rpm包默认的安装位置：
-  * `/etc/`，配置文件安装目录
-  * `/usr/bin/`，可执行的命令安装目录
-  * `/usr/lib/`，程序所使用的函数库保存位置
-  * `/usr/share/doc/`，基本的软件使用手册保存位置
-  * `/usr/share/man/`，帮助文件保存位置
 
 ```
 [root@localhost Packages]# rpm -ql java-1.7.0-openjdk-1.7.0.91-2.6.2.3.el7.x86_64
@@ -555,5 +563,75 @@ Loading mirror speeds from cached hostfile
    系统管理工具
 完成
 ```
+
+## 源码包
+
+源码包与rpm包的区别：
+* 安装之前的区别，概念上不同
+  * rpm包不开源
+  * 源码包开源
+* 安装之后的区别，安装位置不同
+  * rpm包不建议指定安装位置，而是使用默认的安装位置，安装的服务可以使用系统服务管理命令(service)来管理，例如rpm包安装的apache的启动方法是
+```
+/etc/rc.d/init.d/httpd start
+```
+```
+service httpd start
+```
+
+  * 因为源码包没有卸载命令，所以源码包必须安装在指定位置当中，一般选择安装在
+```
+/usr/local/软件名/
+```
+并且源码包安装的服务不能被服务管理命令管理，因为没有安装到默认路径中，只能用绝对路径进行服务的管理，如
+```
+/usr/local/apache2/bin/apachectl start
+```
+
+源码包的特点是开源、自定义、本机编译的效率高，而rpm包由厂商编译，在本机执行时的效率不一定高。
+
+### 安装
+
+* 安装前的准备工作：
+  * 安装C语言编译器，因为Linux中源码包都是以C语言编写，所以在安装源码包之前，必须预先安装C语言编译器，推荐使用yum方式安装
+```
+yum -y install gcc
+```
+```
+[root@localhost songyu]# rpm -qa | grep gcc
+gcc-c++-4.8.5-11.el7.x86_64
+gcc-4.8.5-11.el7.x86_64
+libgcc-4.8.5-11.el7.x86_64
+gcc-gfortran-4.8.5-11.el7.x86_64
+```
+  * 下载源码包
+* 安装时的注意事项：
+  * 源代码保存位置，`/usr/local/src/`
+  * 软件安装位置，`/usr/local/`
+  * 如何确定安装过程报错？安装过程停止，并出现error、warning或no的提示  
+* 安装过程：
+  1. 解压缩下载的源码包
+  2. 进入解压缩目录
+  3. `./configure`，软件配置与检查
+    * 定义需要的功能选项，`./configure --help`查看选项，源码包必须指定安装位置
+```
+./configure --prefix=/usr/local/apache2
+```
+    * 检测系统环境是否符合安装要求
+    * 把定义好的功能选项和检测系统环境的信息都写入`Makefile`文件，用于后续的编辑 
+  4. `make`，编译
+    * 编译报错时使用`make clean`命令，清除编译产生的缓存文件
+  5. `make install`，安装
+  6. 启动
+
+### 卸载
+
+源码包的卸载不需要卸载命令，直接删除安装目录即可，不会遗留任何垃圾文件。
+
+## 一键安装包
+
+所谓的一键安装包，实际上还是安装的rpm包与源码包，只是把安装过程写成了脚本，便于安装
+* 优点：简单、快速、方便
+* 缺点：不能定义安装软件的版本、不能定义所需要的软件功能、源码包的优势丧失
 
 * [参考：慕课网](http://www.imooc.com/course/list?c=linux)
