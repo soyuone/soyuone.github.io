@@ -95,7 +95,14 @@ Using CLASSPATH:       /usr/local/apache-tomcat-7.0.78/bin/bootstrap.jar:/usr/lo
            redirectPort="8443" />
 ```
 
-* 此时，除本机之外的机器无法访问tomcat，这需要防火墙开放`8080`端口，增加`8080`端口到防火墙配置文件`/etc/sysconfig/iptables`中，查找后，在上述路径下并没有`iptables`文件：
+* 此时，除本机之外的机器无法访问tomcat，查看防火墙是否开放`8080`端口，`firewall-cmd --query-port=8080/tcp`：
+
+```
+[root@localhost ~]# firewall-cmd --query-port=8080/tcp
+no
+```
+
+`8080`端口并没有开放，增加`8080`端口到防火墙配置文件`/etc/sysconfig/iptables`中，查找后，在上述路径下并没有`iptables`文件：
 
 ```
 [root@localhost sysconfig]# ls
@@ -114,7 +121,32 @@ grub             network           rsyslog
 init             network-scripts   run-parts
 ```
 
+查阅资料后得知，CentOS 7使用`firewall`防火墙代替`iptables`防火墙，使用如下命令开放`8080`端口：
 
+```
+[root@localhost /]# firewall-cmd --permanent --zone=public --add-port=8080/tcp
+success
+```
+
+更新防火墙规则，不重启服务，`firewall-cmd --reload`：
+
+```
+[root@localhost ~]# firewall-cmd --reload
+success
+```
+
+查看`8080`端口是否开启，`firewall-cmd --query-port=8080/tcp`：
+
+```
+[root@localhost ~]# firewall-cmd --query-port=8080/tcp
+yes
+```
+
+在本机之外的机器尝试访问tomcat：
+
+```
+http://192.168.80.128:8080/
+```
 
 * 删除暂存在`/usr/local/`路径下的`apache-tomcat-7.0.78.tar.gz`安装包：
 
