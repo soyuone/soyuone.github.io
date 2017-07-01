@@ -64,6 +64,81 @@ unix  2      [ ACC ]     STREAM     LISTENING     22400    @/tmp/dbus-Gu6mCXHy
 ...
 ```
 
+## Linux网络配置
+
+### Linux配置IP地址
+
+* `ifconfig`命令临时配置IP地址，例如，临时设置eth0网卡的IP地址与子网掩码：
+
+```
+ifconfig eth0 192.168.0.200 netmask 255.255.255.0
+```
+
+* setup工具永久配置IP地址：
+
+```
+[root@localhost ~]# setup
+```
+
+* 修改网络配置文件：
+  1. 网卡信息文件，`/etc/sysconfig/network-scripts/ifcfg-网卡设备名`：
+    * `DEVICE`，网卡设备名
+    * `BOOTPROTO`，是否自动获取IP(none、static、dhcp)
+    * `ONBOOT`，是否随网络服务启动
+    * `TYPE="Ethernet"`，类型为以太网
+```
+[root@localhost ~]# vi /etc/sysconfig/network-scripts/ifcfg-eno16777736
+```
+```
+TYPE="Ethernet"
+BOOTPROTO="dhcp"
+DEFROUTE="yes"
+PEERDNS="yes"
+PEERROUTES="yes"
+IPV4_FAILURE_FATAL="no"
+IPV6INIT="yes"
+IPV6_AUTOCONF="yes"
+IPV6_DEFROUTE="yes"
+IPV6_PEERDNS="yes"
+IPV6_PEERROUTES="yes"
+IPV6_FAILURE_FATAL="no"
+NAME="eno16777736"
+UUID="50e81ed9-3bad-472e-aeeb-33a530664170"
+DEVICE="eno16777736"
+ONBOOT="yes"
+```
+  2. 主机名文件，`/etc/sysconfig/network`
+```
+[root@localhost ~]# vi /etc/sysconfig/network
+```
+  3. DNS配置文件，`/etc/resolv.conf`
+```
+[root@localhost ~]# vi /etc/resolv.conf
+```
+
+* 图形界面配置IP地址
+
+### 虚拟机网络参数配置
+
+1. 配置Linux IP地址：
+```
+[root@localhost ~]# setup
+```
+2. 修改网卡配置文件，`/etc/sysconfig/network-scripts/ifcfg-网卡设备名` -> `ONBOOT="yes"`：
+```
+[root@localhost ~]# vi /etc/sysconfig/network-scripts/ifcfg-eno16777736
+```
+3. 重启网络服务，`service network restart`：
+```
+[root@localhost ~]# service network restart 
+```
+4. UUID相同时，需要修改UUID（如果是自行安装的Linux系统，不需执行此步骤）：
+  *  删除MAC地址行，`/etc/sysconfig/network-scripts/ifcfg-网卡设备名`
+  *  删除网卡和MAC地址绑定文件，`/etc/udev/rules.d/70-persistent-net.rules`
+  *  重新启动系统
+
+### Linux网络命令
+
 
 
 * [参考：慕课网](http://www.imooc.com/course/list?c=linux)
