@@ -17,7 +17,7 @@ tomcat`版本号Apache Tomcat/7.0.78`在Linux平台的安装和配置，安装to
 ## 安装
 
 * 到tomcat官网下载[apache-tomcat-7.0.78.tar.gz](http://tomcat.apache.org/)
-* 使用[Bitvise SSH Client](https://www.bitvise.com/ssh-client)工具将下载的`apache-tomcat-7.0.78.tar.gz`包复制到`/usr/local/`路径，复制完毕后到查看该路径下是否有该文件：
+* 使用[Bitvise SSH Client](https://www.bitvise.com/ssh-client)工具将下载的`apache-tomcat-7.0.78.tar.gz`包复制到`/usr/local/`路径，复制完毕后查看该路径下是否有文件：
 
 ```
 [root@localhost local]# ls -l
@@ -102,7 +102,7 @@ Using CLASSPATH:       /usr/local/apache-tomcat-7.0.78/bin/bootstrap.jar:/usr/lo
 no
 ```
 
-`8080`端口并没有开放，增加`8080`端口到防火墙配置文件`/etc/sysconfig/iptables`中，查找后，在上述路径下并没有`iptables`文件：
+`8080`端口并没有开放，增加`8080`端口到防火墙配置文件`/etc/sysconfig/iptables`，查找后，在上述路径并没有`iptables`文件：
 
 ```
 [root@localhost sysconfig]# ls
@@ -162,4 +162,3 @@ bin                   games  lib      libexec  share
 
 * [参考：在CentOS中安装tomcat](https://jingyan.baidu.com/article/48a42057f140a4a9242504d4.html)
 * [参考：CentOS中安装tomcat 8](http://www.linuxidc.com/Linux/2015-09/123118.htm)
-* [参考：Linux中如何开启8080端口供外界访问](http://www.cnblogs.com/xiandedanteng/archive/2013/08/28/3287751.html)

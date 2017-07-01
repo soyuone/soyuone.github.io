@@ -94,7 +94,7 @@ ipp.xml                  pmwebapis.xml     vnc-server.xml
 ipsec.xml                pmwebapi.xml      wbem-https.xml
 ```
 
-* 用户配置目录，`/etc/firewalld`：
+* 用户配置目录，`/etc/firewalld/`：
 
 ```
 [root@localhost firewalld]# ls
@@ -272,7 +272,7 @@ Removed symlink /etc/systemd/system/basic.target.wants/firewalld.service.
 ```
 
 * 开放端口，`firewall-cmd --permanent --zone=public --add-port=端口号/通信协议`，选项：
-  * `firwall-cmd`，Linux提供的操作firewall的一个工具
+  * `firwall-cmd`，Linux提供的操作firewall的工具
   * `--permanent`，表示设置永久生效，没有此参数将在重启后失效
   * `--zone=public`，作用域为public
   * `--add-port=端口号/通信协议`，添加端口
