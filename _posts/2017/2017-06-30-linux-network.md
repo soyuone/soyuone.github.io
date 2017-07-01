@@ -10,7 +10,7 @@ author: Kopite
 {:toc}
 
 
-Linux装好以后并不能和网络中的其他机器进行通信，本文对Linux网络配置进行总结。
+Linux安装完之后并不能和网络中的其他机器进行通信，本文对Linux网络配置进行总结。
 
 
 
@@ -61,15 +61,9 @@ unix  2      [ ACC ]     STREAM     LISTENING     16644    /var/run/cups/cups.so
 unix  24     [ ]         DGRAM                    10502    /dev/log
 unix  2      [ ACC ]     STREAM     LISTENING     29940    /tmp/.esd-0/socket
 unix  2      [ ACC ]     STREAM     LISTENING     22400    @/tmp/dbus-Gu6mCXHy
-unix  2      [ ACC ]     STREAM     LISTENING     16656    /var/run/rpcbind.sock
-unix  2      [ ACC ]     STREAM     LISTENING     32790    /run/user/0/at-spi2-socket-3461
-unix  2      [ ACC ]     STREAM     LISTENING     29171    @/tmp/.ICE-unix/3130
-unix  2      [ ACC ]     STREAM     LISTENING     31002    /run/user/0/at-spi2-socket-3441
-unix  2      [ ACC ]     STREAM     LISTENING     24639    private/tlsmgr
-unix  2      [ ACC ]     STREAM     LISTENING     16663    /var/run/dbus/system_bus_socket
-unix  2      [ ACC ]     STREAM     LISTENING     29213    /run/user/0/keyring/pkcs11
-unix  2      [ ACC ]     STREAM     LISTENING     24731    @/tmp/.X11-unix/X0
-unix  2      [ ACC ]     STREAM     LISTENING     24648    private/defer
+...
 ```
+
+
 
 * [参考：慕课网](http://www.imooc.com/course/list?c=linux)
