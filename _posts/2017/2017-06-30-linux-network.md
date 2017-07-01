@@ -139,6 +139,16 @@ ONBOOT="yes"
 
 ### Linux网络命令
 
+#### 网络测试命令
 
+* `ping [选项] IP或域名`，探测指定IP或域名的网络状况，选项：
+  * `-c 次数`，指定ping包的次数
+
+* `telnet [域名或IP] [端口]`，远程管理与端口探测命令
+
+* `traceroute [选项] IP或域名`，路由跟踪命令，选项：
+  * `-n`，使用IP，不使用域名，速度更快
+
+* `wget 下载地址`，下载命令
 
 * [参考：慕课网](http://www.imooc.com/course/list?c=linux)
