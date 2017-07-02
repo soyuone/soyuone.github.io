@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "mysql在windows平台的安装配置"
+title: "mysql在windows平台的安装和配置"
 categories: database
 tags: database mysql windows
 author: Kopite
