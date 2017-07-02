@@ -355,6 +355,62 @@ ldapjdk.noarch : The Mozilla LDAP Java SDK
   名称和简介匹配 only，使用“search all”试试。
 ```
 
+* 查询仓库列表，`yum repolist all/enabled/disabled`：
+  * `yum repolist all`，显示所有的仓库列表
+  * `yum repolist enabled`，显示可用的仓库列表
+  * `yum repolist disabled`，显示不可用的仓库列表
+
+```
+[root@localhost ~]# yum repolist all
+已加载插件：fastestmirror, langpacks
+Loading mirror speeds from cached hostfile
+ * base: mirror.bit.edu.cn
+ * extras: mirrors.hust.edu.cn
+ * updates: mirror.bit.edu.cn
+源标识                             源名称                            状态
+C7.0.1406-base/x86_64              CentOS-7.0.1406 - Base            禁用
+C7.0.1406-centosplus/x86_64        CentOS-7.0.1406 - CentOSPlus      禁用
+C7.0.1406-extras/x86_64            CentOS-7.0.1406 - Extras          禁用
+C7.0.1406-fasttrack/x86_64         CentOS-7.0.1406 - CentOSPlus      禁用
+C7.0.1406-updates/x86_64           CentOS-7.0.1406 - Updates         禁用
+C7.1.1503-base/x86_64              CentOS-7.1.1503 - Base            禁用
+C7.1.1503-centosplus/x86_64        CentOS-7.1.1503 - CentOSPlus      禁用
+C7.1.1503-extras/x86_64            CentOS-7.1.1503 - Extras          禁用
+C7.1.1503-fasttrack/x86_64         CentOS-7.1.1503 - CentOSPlus      禁用
+C7.1.1503-updates/x86_64           CentOS-7.1.1503 - Updates         禁用
+base/7/x86_64                      CentOS-7 - Base                   启用: 9,363
+base-debuginfo/x86_64              CentOS-7 - Debuginfo              禁用
+base-source/7                      CentOS-7 - Base Sources           禁用
+c7-media                           CentOS-7 - Media                  禁用
+centosplus/7/x86_64                CentOS-7 - Plus                   禁用
+centosplus-source/7                CentOS-7 - Plus Sources           禁用
+cr/7/x86_64                        CentOS-7 - cr                     禁用
+extras/7/x86_64                    CentOS-7 - Extras                 启用:   383
+extras-source/7                    CentOS-7 - Extras Sources         禁用
+fasttrack/7/x86_64                 CentOS-7 - fasttrack              禁用
+mysql-cluster-7.5-community/x86_64 MySQL Cluster 7.5 Community       禁用
+mysql-cluster-7.5-community-source MySQL Cluster 7.5 Community - Sou 禁用
+mysql-cluster-7.6-community/x86_64 MySQL Cluster 7.6 Community       禁用
+mysql-cluster-7.6-community-source MySQL Cluster 7.6 Community - Sou 禁用
+mysql-connectors-community/x86_64  MySQL Connectors Community        启用:    36
+mysql-connectors-community-source  MySQL Connectors Community - Sour 禁用
+mysql-tools-community/x86_64       MySQL Tools Community             启用:    47
+mysql-tools-community-source       MySQL Tools Community - Source    禁用
+mysql-tools-preview/x86_64         MySQL Tools Preview               禁用
+mysql-tools-preview-source         MySQL Tools Preview - Source      禁用
+mysql55-community/x86_64           MySQL 5.5 Community Server        禁用
+mysql55-community-source           MySQL 5.5 Community Server - Sour 禁用
+mysql56-community/x86_64           MySQL 5.6 Community Server        禁用
+mysql56-community-source           MySQL 5.6 Community Server - Sour 禁用
+mysql57-community/x86_64           MySQL 5.7 Community Server        启用:   187
+mysql57-community-source           MySQL 5.7 Community Server - Sour 禁用
+mysql80-community/x86_64           MySQL 8.0 Community Server        禁用
+mysql80-community-source           MySQL 8.0 Community Server - Sour 禁用
+updates/7/x86_64                   CentOS-7 - Updates                启用: 2,053
+updates-source/7                   CentOS-7 - Updates Sources        禁用
+repolist: 12,069
+```
+
 #### 安装
 
 * `yum -y install 包名`，选项：
