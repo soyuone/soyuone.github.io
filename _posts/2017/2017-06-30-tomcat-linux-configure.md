@@ -16,6 +16,8 @@ tomcat`版本号Apache Tomcat/7.0.78`在Linux平台的安装和配置，安装to
 
 ## 安装
 
+### 准备工作
+
 * 到tomcat官网下载[apache-tomcat-7.0.78.tar.gz](http://tomcat.apache.org/)
 * 使用[Bitvise SSH Client](https://www.bitvise.com/ssh-client)工具将下载的`apache-tomcat-7.0.78.tar.gz`包复制到`/usr/local/`路径，复制完毕后查看该路径下是否有文件：
 
@@ -34,6 +36,8 @@ drwxr-xr-x. 2 root root       6 8月  12 2015 sbin
 drwxr-xr-x. 5 root root      46 6月  20 19:37 share
 drwxr-xr-x. 2 root root       6 8月  12 2015 src
 ```
+
+### 解压
 
 * 将`apache-tomcat-7.0.78.tar.gz`包解压至`/usr/local/`路径：
 
@@ -62,6 +66,8 @@ apache-tomcat-7.0.78/logs/
 ...
 ```
 
+### 启动服务
+
 * 使用`apache-tomcat-7.0.78/bin/`路径下的`startup.sh`命令启动tomcat：
 
 ```
@@ -76,6 +82,8 @@ Tomcat started.
 
 * 浏览器中输入`http://localhost:8080/`，查看是否显示tomcat默认首页
 
+### 停止服务
+
 * 使用`apache-tomcat-7.0.78/bin/`路径下的`shutdown.sh`命令停止tomcat：
 
 ```
@@ -87,6 +95,8 @@ Using JRE_HOME:        /usr/java/jdk1.7.0_80/jre
 Using CLASSPATH:       /usr/local/apache-tomcat-7.0.78/bin/bootstrap.jar:/usr/local/apache-tomcat-7.0.78/bin/tomcat-juli.jar
 ```
 
+### 解决中文参数乱码
+
 * 为防止`GET`请求时的中文参数乱码，在tomcat停止状态下修改`/usr/local/apache-tomcat-7.0.78/conf`路径下的`server.xml`文件，在如下位置添加`URIEncoding="UTF-8"`：
 
 ```xml
@@ -94,6 +104,8 @@ Using CLASSPATH:       /usr/local/apache-tomcat-7.0.78/bin/bootstrap.jar:/usr/lo
            connectionTimeout="20000"
            redirectPort="8443" />
 ```
+
+### 8080端口
 
 * 此时，除本机之外的机器无法访问tomcat，查看防火墙是否开放`8080`端口，`firewall-cmd --query-port=8080/tcp`：
 
@@ -147,6 +159,8 @@ yes
 ```
 http://192.168.80.128:8080/
 ```
+
+### 删除暂存文件
 
 * 删除暂存在`/usr/local/`路径下的`apache-tomcat-7.0.78.tar.gz`安装包：
 

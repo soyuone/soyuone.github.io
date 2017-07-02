@@ -16,9 +16,9 @@ Linux安装完之后并不能和网络中的其他机器进行通信，本文对
 
 ## 网络基础
 
-### 端口
+### 常用端口
 
-常见端口号：
+常用端口号：
 * `FTP(文件传输协议)`：端口号 20 21
 * `SSH(安全shell协议)`：端口号 22
 * `telnet(远程登录协议)`：端口号 23
@@ -26,43 +26,6 @@ Linux安装完之后并不能和网络中的其他机器进行通信，本文对
 * `http(超文本传输协议)`：端口号 80
 * `SMTP(简单邮件传输协议)`：端口号 25
 * `POP3(邮局协议3代)`：端口号 110
-
-查看本机启用的端口：
-
-```
-[root@localhost ~]# netstat -an
-Active Internet connections (servers and established)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State      
-tcp        0      0 192.168.122.1:53        0.0.0.0:*               LISTEN     
-tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN     
-tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN     
-tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN     
-tcp6       0      0 :::22                   :::*                    LISTEN     
-tcp6       0      0 ::1:631                 :::*                    LISTEN     
-tcp6       0      0 ::1:25                  :::*                    LISTEN     
-udp        0      0 192.168.80.128:45885    61.216.153.104:123      ESTABLISHED
-udp        0      0 0.0.0.0:40852           0.0.0.0:*                          
-udp        0      0 192.168.122.1:53        0.0.0.0:*                          
-udp        0      0 0.0.0.0:67              0.0.0.0:*                          
-udp        0      0 0.0.0.0:68              0.0.0.0:*                          
-udp        0      0 0.0.0.0:5353            0.0.0.0:*                          
-udp        0      0 0.0.0.0:51506           0.0.0.0:*                          
-udp        0      0 127.0.0.1:323           0.0.0.0:*                          
-udp        0      0 192.168.80.128:49497    94.237.64.20:123        ESTABLISHED
-udp6       0      0 ::1:323                 :::*                               
-udp6       0      0 :::35174                :::*                               
-raw6       0      0 :::58                   :::*                    7          
-Active UNIX domain sockets (servers and established)
-Proto RefCnt Flags       Type       State         I-Node   Path
-unix  2      [ ACC ]     STREAM     LISTENING     10497    /run/systemd/journal/stdout
-unix  2      [ ACC ]     STREAM     LISTENING     22401    @/tmp/dbus-sBGDB8hW
-unix  7      [ ]         DGRAM                    10500    /run/systemd/journal/socket
-unix  2      [ ACC ]     STREAM     LISTENING     16644    /var/run/cups/cups.sock
-unix  24     [ ]         DGRAM                    10502    /dev/log
-unix  2      [ ACC ]     STREAM     LISTENING     29940    /tmp/.esd-0/socket
-unix  2      [ ACC ]     STREAM     LISTENING     22400    @/tmp/dbus-Gu6mCXHy
-...
-```
 
 ### firewall防火墙
 
@@ -102,6 +65,8 @@ firewalld.conf  icmptypes  lockdown-whitelist.xml  services  zones
 ```
 
 #### 命令
+
+##### 帮助文档
 
 * 查看帮助文档，`firewall-cmd --help`：
 
@@ -161,7 +126,10 @@ Service Options
 ...
 ```
 
-* 查看已被激活的zone信息，`firewall-cmd --get-active-zones`：
+##### zone
+
+* 查看已被激活的zone信息，`firewall-cmd --get-active-zones`
+* 查看指定接口的zone信息，`firewall-cmd --get-zone-of-interface=网卡设备名`
 
 ```
 [root@localhost ~]# firewall-cmd --get-active-zones
@@ -169,12 +137,12 @@ public
   interfaces: eno16777736
 ```
 
-* 查看指定接口的zone信息，`firewall-cmd --get-zone-of-interface=网卡设备名`：
-
 ```
 [root@localhost ~]# firewall-cmd --get-zone-of-interface=eno16777736
 public
 ```
+
+##### 运行状态
 
 * 查看firewall运行状态，`firewall-cmd --state`：
 
@@ -182,6 +150,8 @@ public
 [root@localhost ~]# firewall-cmd --state
 running
 ```
+
+##### 服务状态
 
 * 查看firewalld服务状态，`systemctl status firewalld.service`：
 
@@ -207,6 +177,8 @@ running
 Hint: Some lines were ellipsized, use -l to show in full.
 ```
 
+##### 防火墙规则
+
 * 查看防火墙规则，`firewall-cmd --list-all`：
 
 ```
@@ -222,6 +194,8 @@ public (default, active)
   rich rules:
 ```
 
+##### 开启
+
 * 开启firewalld服务，`service firewalld start`/`systemctl start firewalld.service`：
 
 ```
@@ -232,6 +206,8 @@ Redirecting to /bin/systemctl start  firewalld.service
 ```
 [root@localhost ~]# systemctl start firewalld.service
 ```
+
+##### 关闭
 
 * 关闭firewalld服务，`service firewalld stop`/`systemctl stop firewalld.service`：
 
@@ -244,6 +220,8 @@ Redirecting to /bin/systemctl stop  firewalld.service
 [root@localhost ~]# systemctl stop firewalld.service
 ```
 
+##### 重启
+
 * 重启firewalld服务，`service firewalld restart`/`systemctl restart firewalld.service`：
 
 ```
@@ -255,7 +233,10 @@ Redirecting to /bin/systemctl restart  firewalld.service
 [root@localhost ~]# systemctl restart firewalld.service
 ```
 
-* 开机启动，`systemctl enable firewalld`：
+##### 开机启动
+
+* 开机启动，`systemctl enable firewalld`
+* 取消开机启动，`systemctl disable firewalld`
 
 ```
 [root@localhost ~]# systemctl enable firewalld
@@ -263,13 +244,13 @@ Created symlink from /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.servi
 Created symlink from /etc/systemd/system/basic.target.wants/firewalld.service to /usr/lib/systemd/system/firewalld.service.
 ```
 
-* 取消开机启动，`systemctl disable firewalld`：
-
 ```
 [root@localhost ~]# systemctl disable firewalld
 Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.
 Removed symlink /etc/systemd/system/basic.target.wants/firewalld.service.
 ```
+
+##### 开放端口
 
 * 开放端口，`firewall-cmd --permanent --zone=public --add-port=端口号/通信协议`，选项：
   * `firwall-cmd`，Linux提供的操作firewall的工具
@@ -282,19 +263,22 @@ Removed symlink /etc/systemd/system/basic.target.wants/firewalld.service.
 success
 ```
 
-* 更新防火墙规则，不重启服务，`firewall-cmd --reload`：
+##### 更新规则
+
+* 更新防火墙规则，不重启服务，`firewall-cmd --reload`
+* 更新防火墙规则，重启服务，`firewall-cmd --complete-reload`
 
 ```
 [root@localhost ~]# firewall-cmd --reload
 success
 ```
 
-* 更新防火墙规则，重启服务，`firewall-cmd --complete-reload`：
-
 ```
 [root@localhost ~]# firewall-cmd --complete-reload
 success
 ```
+
+##### 移除端口
 
 * 移除端口，`firewall-cmd --permanent --zone=public --remove-port=端口号/通信协议`，选项：
   * `--remove-port=端口号/通信协议`，移除端口
@@ -304,7 +288,9 @@ success
 success
 ```
 
-* 查询端口号是否开启，`firewall-cmd --query-port=端口号/通信协议`：
+##### 端口状态
+
+* 查看端口号是否开启，`firewall-cmd --query-port=端口号/通信协议`：
 
 ```
 [root@localhost ~]# firewall-cmd --query-port=80/tcp
@@ -315,7 +301,7 @@ yes
 
 ## Linux网络配置
 
-### Linux配置IP地址
+### 配置IP地址
 
 * `ifconfig`命令临时配置IP地址，例如，临时设置eth0网卡的IP地址与子网掩码：
 
@@ -386,9 +372,7 @@ ONBOOT="yes"
   *  删除网卡和MAC地址绑定文件，`/etc/udev/rules.d/70-persistent-net.rules`
   *  重新启动系统
 
-### Linux网络命令
-
-#### 网络测试命令
+### 网络命令
 
 * `ping [选项] IP或域名`，探测指定IP或域名的网络状况，选项：
   * `-c 次数`，指定ping包的次数

@@ -150,7 +150,7 @@ mysql80-community/x86_64           MySQL 8.0 Community Server        禁用
 mysql80-community-source           MySQL 8.0 Community Server - Sour 禁用
 ```
 
-### 选择安装版本
+### 选择版本
 
 * 可通过修改`/etc/yum.repos.d/mysql-community.repo`，选择安装的mysql版本。例如，安装mysql 5.6版本时，将`[mysql57-community]`中的`enabled=1`改成`enabled=0`，再将`[mysql56-community]`中的`enabled=0`改成`enabled=1`，如下所示：
 
@@ -197,7 +197,7 @@ mysql80-community/x86_64           MySQL 8.0 Community Server        禁用
 mysql80-community-source           MySQL 8.0 Community Server - Sour 禁用
 ```
 
-### 安装mysql
+### 安装
 
 * 安装mysql，`yum install mysql-community-server`：
 
@@ -346,7 +346,7 @@ Running transaction
 [root@localhost ~]# systemctl stop mysqld
 ```
 
-### 查看服务状态
+### 服务状态
 
 * 查看mysql服务启动状态，`systemctl status mysqld`：
 
@@ -397,7 +397,7 @@ Removed symlink /etc/systemd/system/mysql.service.
 [root@localhost ~]# systemctl daemon-reload
 ```
 
-### 修改登录密码
+### 登录密码
 
 * 安装后的mysql按回车键即可登录，修改mysql登录密码，`SET PASSWORD FOR 'root'@'localhost' = PASSWORD('admin');`：
 
@@ -420,7 +420,7 @@ mysql> SET PASSWORD FOR 'root'@'localhost' = PASSWORD('admin');
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-### 修改默认字符集
+### 字符集
 
 * 修改`/etc/my.cnf`，配置默认字符集，字符集名称必须与`/usr/share/mysql/charsets/Index.xml`中一致，如下所示：
 
@@ -451,7 +451,7 @@ Query OK, 0 rows affected (0.00 sec)
 default-character-set=utf8
 ```
 
-### 远程连接设置
+### 远程连接
 
 * 远程连接设置，把在所有数据库的所有表的所有权限赋值给位于所有IP地址的root用户，`grant all privileges on *.* to root@'%'identified by 'mysql登录密码';`：
 
@@ -460,7 +460,7 @@ mysql> grant all privileges on *.* to root@'%'identified by 'admin';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-### 开放3306端口
+### 3306端口
 
 * 防火墙开放3306端口：
 
@@ -479,7 +479,7 @@ success
 yes
 ```
 
-### 删除暂存rpm文件
+### 删除暂存文件
 
 * 删除暂存在`/usr/local/`路径下的`mysql57-community-release-el7-11.noarch.rpm`：
 
