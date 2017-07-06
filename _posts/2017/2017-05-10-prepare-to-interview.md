@@ -50,18 +50,22 @@ author: Kopite
   * 多线程编程时用ConcurrentHashMap代替Hashtable，因为Hashtable使用的是synchronized关键字，锁住的是对象整体-->[java集合——HashMap、HashTable以及ConCurrentHashMap异同比较](http://blog.csdn.net/seu_calvin/article/details/52653711)
 
 * java虚拟机工作原理？
+<br>
 答：[参见：java虚拟机工作原理](http://www.cnblogs.com/zhanglei93/p/6590609.html)
 [参见：深入java虚拟机阅读笔记](https://my.oschina.net/u/1378920/blog/424902)
 
 * java虚拟机优化？
+<br>
 答：[参见：java虚拟机优化大全和案例实战](http://blog.csdn.net/kthq/article/details/8618052)
 
 * 实现Serializable接口（序列化）？
+<br>
 答：[参见：序列化和反序列化的简单理解](http://blog.csdn.net/abc6368765/article/details/51365838)
 [参见：java Serializable(序列化)的理解和总结](http://xiebh.iteye.com/blog/121311)
 [参见：理解java对象序列化](http://www.blogjava.net/jiangshachina/archive/2012/02/13/369898.html)
 
 * Set集合如何保证不重复？
+<br>
 答：[参见：Set集合如何保障不重复](http://ican.iteye.com/blog/2256534)
 
 ## spring mvc
