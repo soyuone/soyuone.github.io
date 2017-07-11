@@ -38,9 +38,13 @@ author: Kopite
 <br>
 答：[参见：cookie和session机制](https://soyuone.github.io/2017/05/23/java-session-cookie/)
 
-* StringBuffer和StringBuilder的区别？
+* Set集合如何保证不重复？
 <br>
-答：在单线程环境下应该使用StringBuilder来保证较好的性能，当需要保证多线程安全时，就应该使用StringBuffer。
+答：[参见：Set集合如何保障不重复](http://ican.iteye.com/blog/2256534)
+
+* ==和equals的区别？
+<br>
+答：[参见：==和equals的区别](http://blog.csdn.net/xcysuccess3/article/details/6557771)
 
 * HashMap和Hashtable的区别？
 <br>
