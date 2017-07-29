@@ -13,7 +13,7 @@ author: Kopite
 对于普通开发者而言，通常会选择使用`TortoiseSVN`作为SVN的客户端，本文对TortoiseSVN`版本号1.9.6`在windows平台的使用进行整理。
 <br>
 <br>
-TortoiseSVN与普通软件不同，它并未提供任何窗口来执行版本管理操作，它只是一个`Shell`扩展，它已经被整合到了windows资源管理器中，因此使用TortoiseSVN非常简单，只需要右键单击任何文件夹、文件，即可弹出TortoiseSVN工具菜单。
+TortoiseSVN与普通软件不同，它并未提供任何窗口来执行版本管理操作，只是一个`Shell`扩展，已经被整合到windows资源管理器中，因此使用TortoiseSVN非常简单，只需要右键单击任何文件夹、文件，即可弹出TortoiseSVN工具菜单。
 
 
 
