@@ -174,6 +174,50 @@ TortoiseSVN提供了很方便的操作允许从某个文件的以前版本重新
 
 ## 使用Eclipse作为SVN客户端
 
+为了使用Eclipse作为SVN客户端，需要为Eclipse安装`Subclipse`插件，在`Eclipse MarketPlace...`中搜索并安装`Subclipse`插件。
+<br>
+<br>
+使用Eclipse从SVN资源库中下载项目按如下步骤进行：
+* 单击Eclipse中`File`菜单 -> `Import...`
+* `SVN` -> `从SVN检出项目`，表示从SVN资源库中导入项目
+* 单击`Next`，弹出`选择/新建位置`对话框，如下图所示<br>
+![](/image/2017/2017-07-29-svn-tortoisesvn-windows-19.png)
 
+* 如果是第一次使用Eclipse作为SVN客户端，在上图所示的对话框中并不存在有效的资源库，可以选择`创建新的资源库位置`，表示创建新的资源库，然后单击`NEXT`，将进入资源库属性设置对话框，在`URL:`处输入SVN资源库的URL，例如`file:///E:/svnRepository`，如下图所示<br>
+![](/image/2017/2017-07-29-svn-tortoisesvn-windows-20.png)
 
-[参考：TortoiseSVN的下载、安装以及常用操作](https://jingyan.baidu.com/article/358570f6638aa4ce4724fcf7.html)
+* 单击`Next`，弹出`选择文件夹`对话框，如下图所示<br>
+![](/image/2017/2017-07-29-svn-tortoisesvn-windows-21.png)
+
+* 选择需要下载的文件夹，如果下载整个项目，则直接选中资源库的根结点，然后单击`Next`，将弹出`检出为`对话框，如下图所示<br>
+![](/image/2017/2017-07-29-svn-tortoisesvn-windows-22.png)
+
+* 单击`Finish`，即可将项目检出到Eclipse中
+
+如果需要在Eclipse中对一个或多个文件执行同步、提交等常规操作，右键 -> `Team`。
+
+### 建立SVN资源库
+
+* 单击Eclipse中`Window`菜单 -> `Show View` -> `Other...` -> `SVN` -> `SVN资源库` -> 单击`OK`
+* 在`SVN 资源库`窗口的空白处，右键单击 -> `新建` -> `资源库位置`，在`URL:`处输入SVN资源库的URL，例如`file:///E:/svnRepository`，单击`Finish`
+
+### 将项目发布到服务器
+
+* 选中需要上传的项目，右键 -> `Team` -> `Share Project...`
+* 选择`SVN`，单击`Next`
+* ...
+
+### 从服务器下载项目
+
+* 在`SVN 资源库`窗口中，选中需要检出的项目，右键单击 -> `检出为...`
+
+### 提交修改
+
+* 选中需要提交的项目，右键 -> `Team` -> `提交...`
+
+### 删除SVN资源库中的项目
+
+* 在`SVN 资源库`窗口中，选中要删除的项目，右键 -> `删除`
+
+* [参考：TortoiseSVN的下载、安装以及常用操作](https://jingyan.baidu.com/article/358570f6638aa4ce4724fcf7.html)
+* [参考：如何在Eclipse中使用SVN](https://jingyan.baidu.com/article/2c8c281daaeaaa0009252a64.html)
