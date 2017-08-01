@@ -2,7 +2,7 @@
 layout: post
 title: "使用TortoiseSVN进行协作开发"
 categories: 版本控制
-tags: 版本控制 windows
+tags: 版本控制 SVN TortoiseSVN windows
 author: Kopite
 ---
 

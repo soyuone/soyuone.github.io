@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "tomcat在Linux平台的安装和配置"
-categories: tomcat
-tags: tomcat Linux CentOS
+categories: 服务器
+tags: 服务器 tomcat Linux CentOS
 author: Kopite
 ---
 

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "nginx在windows平台的配置及常用命令"
-categories: nginx
-tags: nginx windows 负载均衡
+categories: 服务器
+tags: 服务器 nginx windows 负载均衡
 author: Kopite
 ---
 

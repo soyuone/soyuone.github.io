@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "tomcat在windows平台的常用配置"
-categories: tomcat
-tags: tomcat windows
+categories: 服务器
+tags: 服务器 tomcat windows
 author: Kopite
 ---
 

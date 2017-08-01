@@ -2,7 +2,7 @@
 layout: post
 title: "git在windows平台的常用命令"
 categories: 版本控制
-tags: 版本控制 windows
+tags: 版本控制 git windows
 author: Kopite
 ---
 
