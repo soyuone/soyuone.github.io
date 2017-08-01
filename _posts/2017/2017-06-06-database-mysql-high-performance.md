@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "高性能mysql：mysql架构与历史"
-categories: database
-tags: database mysql
+categories: Database
+tags: Database mysql
 author: Kopite
 ---
 

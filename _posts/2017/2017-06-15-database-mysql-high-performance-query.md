@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "高性能mysql：查询性能优化"
-categories: database
-tags: database mysql
+categories: Database
+tags: Database mysql
 author: Kopite
 ---
 

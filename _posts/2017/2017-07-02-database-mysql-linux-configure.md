@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "mysql在Linux平台的安装和配置"
-categories: database
-tags: database mysql Linux CentOS
+categories: Database
+tags: Database mysql Linux CentOS
 author: Kopite
 ---
 

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "git在windows平台的常用命令"
-categories: git
-tags: git windows
+categories: 版本控制
+tags: 版本控制 windows
 author: Kopite
 ---
 

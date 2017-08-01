@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "使用git将项目上传至github"
-categories: git
-tags: git github
+categories: 版本控制
+tags: 版本控制 github
 author: Kopite
 ---
 

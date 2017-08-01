@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "高性能mysql：schema与数据类型优化"
-categories: database
-tags: database mysql
+categories: Database
+tags: Database mysql
 author: Kopite
 ---
 
