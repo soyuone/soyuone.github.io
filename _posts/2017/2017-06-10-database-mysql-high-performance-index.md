@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "高性能mysql：创建高性能的索引"
-categories: Database
-tags: Database mysql B-Tree B+Tree 索引
+categories: 数据库
+tags: 数据库 mysql B-Tree B+Tree 索引
 author: Kopite
 ---
 

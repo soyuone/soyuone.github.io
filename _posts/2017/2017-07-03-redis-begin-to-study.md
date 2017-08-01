@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "redis入门"
-categories: redis
-tags: redis nosql
+categories: nosql
+tags: nosql redis
 author: Kopite
 ---
 
