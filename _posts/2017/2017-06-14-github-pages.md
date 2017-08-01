@@ -2,7 +2,7 @@
 layout: post
 title: "在github pages搭建个人主页"
 categories: github
-tags: github pages
+tags: github
 author: Kopite
 ---
 
