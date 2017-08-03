@@ -19,7 +19,7 @@ TortoiseSVN与普通软件不同，它并未提供任何窗口来执行版本管
 
 ## 下载和安装
 
-* 登录[TortoiseSVN官方网站](https://tortoisesvn.net/)，选择合适的TortoiseSVN版本进行下载，此处选择下载`1.9.6版本`，下载后得到`TortoiseSVN-1.9.6.27867-x64-svn-1.9.6.msi`文件
+* 进入[TortoiseSVN官方网站](https://tortoisesvn.net/)，选择合适的TortoiseSVN版本进行下载，此处选择下载`1.9.6版本`，下载后得到`TortoiseSVN-1.9.6.27867-x64-svn-1.9.6.msi`文件
 * `Next` -> `Next`
 * 选择安装路径
 * 单击`Install`，开始安装
