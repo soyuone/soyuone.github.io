@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "myeclipse在windows平台的安装及使用"
-categories: IDE
-tags: IDE myeclipse windows
+categories: 开发工具
+tags: 开发工具 myeclipse windows
 author: Kopite
 ---
 

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "maven在windows平台的安装和配置"
-categories: maven
-tags: maven windows
+categories: 项目管理
+tags: 项目管理 maven windows
 author: Kopite
 ---
 

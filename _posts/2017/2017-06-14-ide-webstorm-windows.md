@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "WebStorm在windows平台的安装及使用"
-categories: IDE
-tags: IDE WebStorm windows
+categories: 开发工具
+tags: 开发工具 WebStorm windows
 author: Kopite
 ---
 

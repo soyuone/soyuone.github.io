@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "eclipse在windows平台的常用配置"
-categories: IDE
-tags: IDE eclipse windows
+categories: 开发工具
+tags: 开发工具 eclipse windows
 author: Kopite
 ---
 

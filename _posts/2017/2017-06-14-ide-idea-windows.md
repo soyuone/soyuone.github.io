@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "IntelliJ IDEA在windows平台的安装及使用"
-categories: IDE
-tags: IDE IDEA windows
+categories: 开发工具
+tags: 开发工具 IDEA windows
 author: Kopite
 ---
 
