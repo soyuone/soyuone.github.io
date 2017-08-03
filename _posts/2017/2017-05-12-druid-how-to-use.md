@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "druid数据库连接池"
-categories: 数据源
-tags: 数据源 druid
+categories: 连接池
+tags: 连接池 druid
 author: Kopite
 ---
 

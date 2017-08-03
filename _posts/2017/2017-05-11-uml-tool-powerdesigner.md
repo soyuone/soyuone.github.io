@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "uml建模工具之powerdesigner的安装及使用"
-categories: uml
-tags: uml powerdesigner
+title: "UML建模工具之powerdesigner的安装及使用"
+categories: UML
+tags: UML powerdesigner
 author: Kopite
 ---
 
