@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "redis在windows平台的配置及常用命令"
-categories: nosql
-tags: nosql redis windows
+categories: NoSQL
+tags: NoSQL redis windows
 author: Kopite
 ---
 
