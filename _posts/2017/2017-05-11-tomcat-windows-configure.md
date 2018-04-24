@@ -67,3 +67,41 @@ tomcat 7中配置用户，在`\conf\tomcat-users.xml`中添加以下配置
     <user username="tomcat" password="admin" roles="admin-gui,admin,manager-gui,manager"/>
 </tomcat-users>
 ```
+
+## 虚拟目录
+
+可以通过多个路径访问tomcat中的同一个项目，在`‪D:\apache-tomcat-7.0.65\conf\server.xml`中添加如下配置
+
+```xml
+<Host appBase="webapps" autoDeploy="true" name="localhost" unpackWARs="true">
+
+<!-- SingleSignOn valve, share authentication between web applications
+     Documentation at: /docs/config/valve.html -->
+<!--
+<Valve className="org.apache.catalina.authenticator.SingleSignOn" />
+-->
+
+<!-- Access log processes all example.
+     Documentation at: /docs/config/valve.html
+     Note: The pattern used is equivalent to using pattern="common" -->
+<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
+
+<Context path="/videoplatform" docBase="videoplatform" reloadable="true"/>
+<Context path="/platform" docBase="videoplatform" reloadable="true"/>
+</Host>
+```
+
+即可通过如下两种方式访问该项目
+* `http://localhost:8080/platform/`
+* `http://localhost:8080/videoplatform/`
+
+`Host`中相关属性
+* `appBase`
+* `autoDeploy`
+* `name`
+* `unpackWARs`
+
+`Context`中相关属性
+* `path`
+* `docBase`
+* `reloadable`‪
