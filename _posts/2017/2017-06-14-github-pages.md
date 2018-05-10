@@ -129,6 +129,37 @@ Configuration file: D:/workspace/soyuone.github.io/_config.yml
   Server running... press ctrl-c to stop.
 ```
 
+## 常见问题
+
+### 端口占用
+
+jekyll安装成功后，命令行进入项目路径，输入`jekyll s`，报以下错误：
+
+```
+D:\workspace\soyuone.github.io>jekyll s
+Configuration file: D:/workspace/soyuone.github.io/_config.yml
+Configuration file: D:/workspace/soyuone.github.io/_config.yml
+            Source: D:/workspace/soyuone.github.io
+       Destination: D:/workspace/soyuone.github.io/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating...
+                    done in 10.976 seconds.
+  Please add the following to your Gemfile to avoid polling for changes:
+    gem 'wdm', '>= 0.1.0' if Gem.win_platform?
+ Auto-regeneration: enabled for 'D:/workspace/soyuone.github.io'
+Configuration file: D:/workspace/soyuone.github.io/_config.yml
+jekyll 3.4.3 | Error:  Permission denied - bind(2) for 127.0.0.1:4000
+```
+
+* 查看4000端口被那个进程占用，命令行输入`netstat -aon | findstr "4000"`
+
+```
+D:\>netstat -aon | findstr "4000"
+  TCP    127.0.0.1:4000         0.0.0.0:0              LISTENING       6440
+```
+
+* 关闭冲突的进程，`任务管理器` -> `服务` -> `PID`为6440的进程 -> 右键`停止`
+
 * [参考：github pages](https://pages.github.com/)
 * [参考：Ruby教程](http://www.runoob.com/ruby/ruby-tutorial.html)
 * [参考：RubyGems镜像](https://gems.ruby-china.org/)
