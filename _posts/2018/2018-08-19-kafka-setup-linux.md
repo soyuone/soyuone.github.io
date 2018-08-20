@@ -804,6 +804,60 @@ java.lang.NullPointerException
 [root@localhost kafka_2.12-2.0.0]# ./bin/kafka-server-stop.sh
 ```
 
+### 创建Topic
+
+创建一个名为`test`的Topic（只有一个副本，一个分区)，创建并验证Topic:
+
+```
+[root@localhost bin]# pwd
+/usr/local/kafka_2.12-2.0.0/bin
+[root@localhost bin]# ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+Created topic "test".
+```
+
+### 查看Topic
+
+列出所有的Topic：
+
+```
+[root@localhost bin]# ./kafka-topics.sh --list --zookeeper localhost:2181
+test
+```
+
+```
+[root@localhost bin]# ./kafka-topics.sh --zookeeper localhost:2181 --describe --topic test
+Topic:test	PartitionCount:1	ReplicationFactor:1	Configs:
+	Topic: test	Partition: 0	Leader: 0	Replicas: 0	Isr: 0
+```
+
+### 发布消息
+
+向Topic上发布消息，按`Ctrl+D`结束：
+
+```
+[root@localhost bin]# ./kafka-console-producer.sh --broker-list localhost:9092 --topic test
+>My name is song.
+>Hello Kafka.
+```
+
+### 接收消息
+
+从Topic上接收消息，按`Ctrl+C`结束：
+
+```
+[root@localhost bin]# ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+My name is song.
+Hello Kafka.
+^CProcessed a total of 2 messages
+```
+
+## broker配置
+
+
+
+### 常规配置
+
+
 
 * [参考：在CentOS7上安装Zookeeper-3.4.9服务](https://www.linuxidc.com/Linux/2016-09/135052.htm)
 * [参考：Linux系统中Kafka环境的搭建](https://blog.csdn.net/xuzhelin/article/details/71515208)
