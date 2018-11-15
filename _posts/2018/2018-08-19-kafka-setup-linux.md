@@ -983,3 +983,4 @@ Hello Kafka.
 * [参考：Linux系统中Kafka环境的搭建](https://blog.csdn.net/xuzhelin/article/details/71515208)
 * [参考：Kafka配置文件server.properties](https://www.cnblogs.com/LUA123/p/7349145.html)
 * [参考：kafka学习(1)linux下的安装和启动，以及Java示例代码](https://blog.csdn.net/kkgbn/article/details/77540491)
+* [参考：搭建 Zookeeper-3.4.11 集群](https://www.cnblogs.com/LUA123/p/7222216.html)
