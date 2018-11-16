@@ -121,9 +121,8 @@ clientPort=2181
 
 ```
 # zookeeper-3.4.12 config start
-export ZOOKEEPER_HOME=/usr/local/zookeeper-3.4.12/
+export ZOOKEEPER_HOME=/usr/local/zookeeper-3.4.12
 export PATH=$ZOOKEEPER_HOME/bin:$PATH
-export PATH
 # zookeeper-3.4.12 config end
 ```
 
@@ -242,7 +241,28 @@ server.2=192.168.80.131:2888:3888
 [root@ data]# vim myid
 ```
 
-完成上述步骤并给相应端口开启防火墙后，就可以启动服务器。
+完成上述步骤并给`2181`、`2888`、`3888`端口开启防火墙后，就可以依次启动`Zookeeper`服务并查看启动状态，`192.168.80.129`、`192.168.80.130`、`192.168.80.131`的启动状态依次如下所示：
+
+```
+[root@ /]# zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
+Mode: follower
+```
+
+```
+[root@ /]# zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
+Mode: follower
+```
+
+```
+[root@ /]# zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
+Mode: leader
+```
 
 ## 安装Kafka Broker
 
