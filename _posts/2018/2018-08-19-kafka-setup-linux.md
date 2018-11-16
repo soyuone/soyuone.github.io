@@ -19,7 +19,7 @@ author: Kopite
 
 ## 安装Zookeeper
 
-![](/image/2018/2018-08-19-kafka-setup-linux-1.png)
+![](/image/2018/2018-08-19-kafka-setup-linux-1.PNG)
 
 `Kafka`使用`Zookeeper`保存集群的元数据信息和消费者信息，见上图所示，`Zookeeper`的安装步骤如下（`Kafka`发行版自带了`Zookeeper`，可直接从脚本启动）：
 * 进入[Apache Zookeeper官方网站](http://zookeeper.apache.org/)，选择合适的镜像站点及Apache Zookeeper版本进行下载，此处使用[www-eu.apache.org/dist/zookeeper/](http://www-eu.apache.org/dist/zookeeper/)镜像站点进行下载，选择当前的稳定版`3.4.12版本`，找到`zookeeper-3.4.12.tar.gz`，点击即可下载
