@@ -182,9 +182,67 @@ Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
 Starting zookeeper ... STARTED
 ```
 
-## Zookeeper群组
+## Zookeeper集群
 
-`Zookeeper`集群被称为群组。`Zookeeper`使用的是一致性协议，所以建议每个节点里应该包含奇数个节点，因为只有当群组里的大多数节点处于可用状态，`Zookeeper`才能处理外部的请求。
+`Zookeeper`使用一致性协议，所以建议每个节点里应该包含`奇数`个节点（比如3个、5个等），因为只有当群组里的`大多数`节点处于可用状态，`Zookeeper`才能处理外部的请求。
+<br>
+<br>
+假设有一个包含5个节点的群组，如果要对群组做一些包括更换节点在内的配置更改，需要依次重启每一个节点。不建议一个群组包含超过7个节点，节点过多会降低整个群组的性能。
+<br>
+<br>
+群组需要有一些公共配置，需要列出所有服务器，并且每个服务器还要在数据目录中创建一个`myid`文件，用于指明自己的ID。
+<br>
+<br>
+首先在`/conf/zoo.cfg`文件中按照`server.X=hostname:peerPort:leaderPort`格式添加所有`Zookeeper`服务器的地址，如下所示：
+* `X`：服务器的ID，它必须是一个整数，不一定要从`0`开始，也不要求连续
+* `hostname`：服务器的ip地址
+* `peerPort`：用于节点间通信的TCP端口
+* `leaderPort`：用于首领选举的TCP端口
+
+```
+# The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial 
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between 
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just 
+# example sakes.
+dataDir=/usr/local/zookeeper-3.4.12/data
+# the port at which the clients will connect
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the 
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to "0" to disable auto purge feature
+#autopurge.purgeInterval=1
+server.0=192.168.80.129:2888:3888
+server.1=192.168.80.130:2888:3888
+server.2=192.168.80.131:2888:3888
+```
+
+客户端只需要通过`clientPort`就能连接到群组，而群组节点间的通信则需要同时用到这3个端口（`clientPort`、`peerPort`、`leaderPort`）。
+<br>
+<br>
+另外，在`dataDir`目录下创建一个名为`/data/myid`的文件，在文件内部输入对应服务器的`X`值，如下所示：
+
+```
+[root@ data]# vim myid
+```
+
+完成上述步骤并给相应端口开启防火墙后，就可以启动服务器。
 
 ## 安装Kafka Broker
 
