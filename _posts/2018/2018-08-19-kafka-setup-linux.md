@@ -79,7 +79,7 @@ zookeeper-3.4.12/contrib/rest/lib/jersey-json-1.1.5.1.jar
 [root@ conf]# cp zoo_sample.cfg zoo.cfg
 ```
 
-* 打开`zoo.cfg`文件，创建`/zookeeper-3.4.12/data`目录，修改数据目录为`dataDir=/usr/local/zookeeper-3.4.12/data`，保存并关闭：
+* 打开`zoo.cfg`文件，创建`/zookeeper-3.4.12/data`目录，修改数据目录为`dataDir=/usr/local/zookeeper-3.4.12/data`；创建`/zookeeper-3.4.12/logs`日志目录，新增日志目录为`dataLogDir=/usr/local/zookeeper-3.4.12/logs`，保存并关闭：
 
 ```
 # number of milliseconds of each tick
@@ -98,6 +98,8 @@ syncLimit=5
 # example sakes.
 # 数据目录
 dataDir=/usr/local/zookeeper-3.4.12/data
+# log directory
+dataLogDir=/usr/local/zookeeper-3.4.12/logs
 # the port at which the clients will connect
 # 客户端访问Zookeeper的端口号
 clientPort=2181
@@ -179,89 +181,6 @@ Stopping zookeeper ... STOPPED
 ZooKeeper JMX enabled by default
 Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
 Starting zookeeper ... STARTED
-```
-
-## Zookeeper集群
-
-`Zookeeper`使用一致性协议，所以建议每个节点里应该包含`奇数`个节点（比如3个、5个等），因为只有当集群里的`大多数`节点处于可用状态，`Zookeeper`才能处理外部的请求。
-<br>
-<br>
-假设有一个包含5个节点的集群，如果要对集群做一些包括更换节点在内的配置更改，需要依次重启每一个节点。不建议一个集群包含超过7个节点，节点过多会降低整个集群的性能。
-<br>
-<br>
-集群需要有一些公共配置，需要列出所有服务器，并且每个服务器还要在数据目录中创建一个`myid`文件，用于指明自己的ID。
-<br>
-<br>
-首先在`/conf/zoo.cfg`文件中按照`server.X=hostname:peerPort:leaderPort`格式添加所有`Zookeeper`服务器的地址，如下所示：
-* `X`：服务器的ID，它必须是一个整数，不一定要从`0`开始，也不要求连续
-* `hostname`：服务器的ip地址
-* `peerPort`：用于节点间通信的TCP端口
-* `leaderPort`：用于首领选举的TCP端口
-
-```
-# The number of milliseconds of each tick
-tickTime=2000
-# The number of ticks that the initial 
-# synchronization phase can take
-initLimit=10
-# The number of ticks that can pass between 
-# sending a request and getting an acknowledgement
-syncLimit=5
-# the directory where the snapshot is stored.
-# do not use /tmp for storage, /tmp here is just 
-# example sakes.
-dataDir=/usr/local/zookeeper-3.4.12/data
-# the port at which the clients will connect
-clientPort=2181
-# the maximum number of client connections.
-# increase this if you need to handle more clients
-#maxClientCnxns=60
-#
-# Be sure to read the maintenance section of the 
-# administrator guide before turning on autopurge.
-#
-# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
-#
-# The number of snapshots to retain in dataDir
-#autopurge.snapRetainCount=3
-# Purge task interval in hours
-# Set to "0" to disable auto purge feature
-#autopurge.purgeInterval=1
-server.0=192.168.80.129:2888:3888
-server.1=192.168.80.130:2888:3888
-server.2=192.168.80.131:2888:3888
-```
-
-客户端只需要通过`clientPort`就能连接到集群，而集群节点间的通信则需要同时用到这3个端口（`clientPort`、`peerPort`、`leaderPort`）。
-<br>
-<br>
-另外，在`dataDir`目录下创建一个名为`/data/myid`的文件，在文件内部输入对应服务器的`X`值，如下所示：
-
-```
-[root@ data]# vim myid
-```
-
-完成上述步骤并给`2181`、`2888`、`3888`端口开启防火墙后，就可以依次启动`Zookeeper`服务并查看启动状态，`192.168.80.129`、`192.168.80.130`、`192.168.80.131`的启动状态依次如下所示：
-
-```
-[root@ /]# zkServer.sh status
-ZooKeeper JMX enabled by default
-Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
-Mode: follower
-```
-
-```
-[root@ /]# zkServer.sh status
-ZooKeeper JMX enabled by default
-Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
-Mode: follower
-```
-
-```
-[root@ /]# zkServer.sh status
-ZooKeeper JMX enabled by default
-Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
-Mode: leader
 ```
 
 ## 安装Kafka Broker
@@ -1049,9 +968,115 @@ Hello Kafka.
 ^CProcessed a total of 2 messages
 ```
 
-## broker配置
+## Zookeeper集群
 
+`Zookeeper`使用一致性协议，所以建议每个节点里应该包含`奇数`个节点（比如3个、5个等），因为只有当集群里的`大多数`节点处于可用状态，`Zookeeper`才能处理外部的请求。
+<br>
+<br>
+假设有一个包含5个节点的集群，如果要对集群做一些包括更换节点在内的配置更改，需要依次重启每一个节点。不建议一个集群包含超过7个节点，节点过多会降低整个集群的性能。
+<br>
+<br>
+集群需要有一些公共配置，需要列出所有服务器，并且每个服务器还要在数据目录中创建一个`myid`文件，用于指明自己的ID。
+<br>
+<br>
+首先在`/conf/zoo.cfg`文件中按照`server.X=hostname:peerPort:leaderPort`格式添加所有`Zookeeper`服务器的地址，如下所示：
+* `X`：服务器的ID，它必须是一个整数，不一定要从`0`开始，也不要求连续
+* `hostname`：服务器的ip地址
+* `peerPort`：用于节点间通信的TCP端口
+* `leaderPort`：用于首领选举的TCP端口
 
+```
+# The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial 
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between 
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just 
+# example sakes.
+dataDir=/usr/local/zookeeper-3.4.12/data
+# log directory
+dataLogDir=/usr/local/zookeeper-3.4.12/logs
+# the port at which the clients will connect
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the 
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to "0" to disable auto purge feature
+#autopurge.purgeInterval=1
+server.0=192.168.80.129:2888:3888
+server.1=192.168.80.130:2888:3888
+server.2=192.168.80.131:2888:3888
+```
+
+客户端只需要通过`clientPort`就能连接到集群，而集群节点间的通信则需要同时用到这3个端口（`clientPort`、`peerPort`、`leaderPort`）。
+<br>
+<br>
+另外，在`dataDir`目录下创建一个名为`/data/myid`的文件，在文件内部输入对应服务器的`X`值，如下所示：
+
+```
+[root@ data]# vim myid
+```
+
+完成上述步骤并给`2181`、`2888`、`3888`端口开启防火墙后，就可以依次启动`Zookeeper`服务并查看启动状态，`192.168.80.129`、`192.168.80.130`、`192.168.80.131`的启动状态依次如下所示：
+
+```
+[root@ /]# zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
+Mode: follower
+```
+
+```
+[root@ /]# zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
+Mode: follower
+```
+
+```
+[root@ /]# zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/local/zookeeper-3.4.12/bin/../conf/zoo.cfg
+Mode: leader
+```
+
+## Kafka集群
+
+修改`/kafka_2.12-2.0.0/config/server.properties`配置文件，`192.168.80.129`、`192.168.80.130`、`192.168.80.131`依次修改如下：
+
+```
+broker.id=0
+listeners=PLAINTEXT://192.168.80.129:9092
+advertised.listeners=PLAINTEXT://192.168.80.129:9092
+zookeeper.connect=192.168.80.129:2181,192.168.80.130:2181,192.168.80.131:2181
+```
+
+```
+broker.id=1
+listeners=PLAINTEXT://192.168.80.130:9092
+advertised.listeners=PLAINTEXT://192.168.80.130:9092
+zookeeper.connect=192.168.80.129:2181,192.168.80.130:2181,192.168.80.131:2181
+```
+
+```
+broker.id=2
+listeners=PLAINTEXT://192.168.80.131:9092
+advertised.listeners=PLAINTEXT://192.168.80.131:9092
+zookeeper.connect=192.168.80.129:2181,192.168.80.130:2181,192.168.80.131:2181
+```
 
 ### 常规配置
 
