@@ -388,3 +388,4 @@ ONBOOT="yes"
 * [参考：CentOS 7中firewall防火墙详解和配置以及切换为iptables防火墙](http://blog.csdn.net/xlgen157387/article/details/52672988)
 * [参考：CentOS 7下使用firewall](http://www.centoscn.com/image-text/config/2015/0730/5943.html)
 * [参考：CentOS 7 firewall-cmd查看端口是否开放及开放端口](http://blog.csdn.net/y534560449/article/details/65629697)
+* [参考：为VMware的多台虚拟机绑定IP地址的方法](https://jingyan.baidu.com/article/afd8f4deacc80534e286e9b7.html)

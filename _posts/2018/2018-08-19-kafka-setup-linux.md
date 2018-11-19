@@ -1078,10 +1078,6 @@ advertised.listeners=PLAINTEXT://192.168.80.131:9092
 zookeeper.connect=192.168.80.129:2181,192.168.80.130:2181,192.168.80.131:2181
 ```
 
-### 常规配置
-
-
-
 * [参考：在CentOS7上安装Zookeeper-3.4.9服务](https://www.linuxidc.com/Linux/2016-09/135052.htm)
 * [参考：Linux系统中Kafka环境的搭建](https://blog.csdn.net/xuzhelin/article/details/71515208)
 * [参考：Kafka配置文件server.properties](https://www.cnblogs.com/LUA123/p/7349145.html)
