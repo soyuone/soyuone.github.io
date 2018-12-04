@@ -57,7 +57,39 @@ success
 yes
 ```
 
-使用`/bin/kafka-manager`启动`kafka-manager`。
+使用以下命令启动`kafka-manager`，浏览器中输入`http://192.168.80.129:9000`即可访问`kafka-manager`：
+
+```
+[root@localhost bin]# ./kafka-manager
+```
+
+## 使用kafka-manager
+
+### Add Cluster
+
+![](/image/2018/2018-12-03-kafka-manager-1.PNG)
+
+点击`Cluster`->`Add Cluster`，进入上图中所示的新增集群界面，依次输入`Cluster Name`、`Cluster Zookeeper Hosts`、`Kafka Version`，点击`Save`保存，新增集群后的界面如下图所示：
+
+![](/image/2018/2018-12-03-kafka-manager-2.PNG)
+
+点击集群名称进入`Summary`界面：
+
+![](/image/2018/2018-12-03-kafka-manager-3.PNG)
+
+在`Summary`界面可查看`Topics`、`Brokers`：
+
+![](/image/2018/2018-12-03-kafka-manager-4.PNG)
+
+![](/image/2018/2018-12-03-kafka-manager-5.PNG)
+
+### Create Topic
+
+![](/image/2018/2018-12-03-kafka-manager-6.PNG)
+
+点击`Topic`->`Create Topic`，进入上图中所示的新增主题界面，依次输入`Topic`、`Partitions`、`Replication Factor`，点击`Create`保存，新增主题后的界面如下图所示：
+
+![](/image/2018/2018-12-03-kafka-manager-7.PNG)
 
 * [参考：kafka-manager-1.3.3.18（已编译，上传修改zookeeper直接使用）](https://blog.csdn.net/qq_20793353/article/details/81115216)
 * [参考：kafka集群管理工具kafka-manager部署安装](https://www.cnblogs.com/dadonggg/p/8205302.html)
