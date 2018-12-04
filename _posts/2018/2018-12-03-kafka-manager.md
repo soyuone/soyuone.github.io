@@ -91,5 +91,5 @@ yes
 
 ![](/image/2018/2018-12-03-kafka-manager-7.PNG)
 
-* [参考：kafka-manager-1.3.3.18（已编译，上传修改zookeeper直接使用）](https://blog.csdn.net/qq_20793353/article/details/81115216)
+* [参考：kafka-manager维护工具使用指南](https://blog.csdn.net/xhpscdx/article/details/76670209)
 * [参考：kafka集群管理工具kafka-manager部署安装](https://www.cnblogs.com/dadonggg/p/8205302.html)
