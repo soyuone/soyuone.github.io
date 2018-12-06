@@ -2,7 +2,7 @@
 layout: post
 title: "nginx+tomcat+spring session+redis在windows平台实现负载均衡及session共享"
 categories: 服务器
-tags: 服务器 nginx tomcat nosql redis windows session 负载均衡
+tags: 服务器 nginx tomcat NoSQL redis windows session 负载均衡
 author: Kopite
 ---
 
