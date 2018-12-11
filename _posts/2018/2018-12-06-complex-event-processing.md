@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "复杂事件处理（Complex Event Processing）"
-categories: CEP
-tags: CEP Esper
+categories: 大数据
+tags: 大数据 CEP Esper
 author: Kopite
 ---
 
