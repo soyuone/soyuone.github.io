@@ -63,6 +63,12 @@ yes
 [root@localhost bin]# ./kafka-manager
 ```
 
+或者
+
+```
+[root@localhost bin]# nohup ./kafka-manager &
+```
+
 ## 使用kafka-manager
 
 ### Add Cluster
