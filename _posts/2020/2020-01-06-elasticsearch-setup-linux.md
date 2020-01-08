@@ -96,9 +96,9 @@ drwxr-xr-x. 12 songyu songyu      4096 11月 19 2018 zookeeper-3.4.12
 
 ## 启动Elasticsearch
 
-### 权限错误
+### root启动报错
 
-执行以下命令进行启动`./bin/elasticsearch`,报以下错误：
+执行以下命令进行启动`./bin/elasticsearch`：
 
 ```
 [root@localhost elasticsearch-7.5.1]# ./bin/elasticsearch
@@ -120,101 +120,108 @@ Caused by: java.lang.RuntimeException: can not run elasticsearch as root
 	... 6 more
 ```
 
-上述信息提示不能以`root`用户启动`Elasticsearch`，遂切换至`songyu`用户进行启动，报以下错误:
+上述信息提示不能以`root`用户启动`Elasticsearch`。
+
+### 其它用户启动
+
+遂切换至`songyu`用户执行`./bin/elasticsearch`命令进行启动，启动成功:
 
 ```
 [songyu@localhost elasticsearch-7.5.1]$ ./bin/elasticsearch
 future versions of Elasticsearch will require Java 11; your Java version from [/usr/java/jdk1.8.0_191-amd64/jre] does not meet this requirement
-Exception in thread "main" java.nio.file.AccessDeniedException: /usr/local/elasticsearch-7.5.1/config/jvm.options
-	at sun.nio.fs.UnixException.translateToIOException(UnixException.java:84)
-	at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:102)
-	at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:107)
-	at sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:214)
-	at java.nio.file.Files.newByteChannel(Files.java:361)
-	at java.nio.file.Files.newByteChannel(Files.java:407)
-	at java.nio.file.spi.FileSystemProvider.newInputStream(FileSystemProvider.java:384)
-	at java.nio.file.Files.newInputStream(Files.java:152)
-	at org.elasticsearch.tools.launchers.JvmOptionsParser.main(JvmOptionsParser.java:62)
+[2020-01-08T13:16:24,718][INFO ][o.e.e.NodeEnvironment    ] [localhost.localdomain] using [1] data paths, mounts [[/ (rootfs)]], net usable_space [10.1gb], net total_space [13.7gb], types [rootfs]
+[2020-01-08T13:16:24,778][INFO ][o.e.e.NodeEnvironment    ] [localhost.localdomain] heap size [990.7mb], compressed ordinary object pointers [true]
+[2020-01-08T13:16:24,832][INFO ][o.e.n.Node               ] [localhost.localdomain] node name [localhost.localdomain], node ID [VpU5ozBkQTexK9eYcCO8Lw], cluster name [elasticsearch]
+[2020-01-08T13:16:24,833][INFO ][o.e.n.Node               ] [localhost.localdomain] version[7.5.1], pid[9876], build[default/tar/3ae9ac9a93c95bd0cdc054951cf95d88e1e18d96/2019-12-16T22:57:37.835892Z], OS[Linux/3.10.0-327.el7.x86_64/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_191/25.191-b12]
+[2020-01-08T13:16:24,835][INFO ][o.e.n.Node               ] [localhost.localdomain] JVM home [/usr/java/jdk1.8.0_191-amd64/jre]
+[2020-01-08T13:16:24,837][INFO ][o.e.n.Node               ] [localhost.localdomain] JVM arguments [-Des.networkaddress.cache.ttl=60, -Des.networkaddress.cache.negative.ttl=10, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dio.netty.allocator.numDirectArenas=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -Djava.locale.providers=COMPAT, -Xms1g, -Xmx1g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -Djava.io.tmpdir=/tmp/elasticsearch-5143197216165547241, -XX:+HeapDumpOnOutOfMemoryError, -XX:HeapDumpPath=data, -XX:ErrorFile=logs/hs_err_pid%p.log, -XX:+PrintGCDetails, -XX:+PrintGCDateStamps, -XX:+PrintTenuringDistribution, -XX:+PrintGCApplicationStoppedTime, -Xloggc:logs/gc.log, -XX:+UseGCLogFileRotation, -XX:NumberOfGCLogFiles=32, -XX:GCLogFileSize=64m, -XX:MaxDirectMemorySize=536870912, -Des.path.home=/usr/local/elasticsearch-7.5.1, -Des.path.conf=/usr/local/elasticsearch-7.5.1/config, -Des.distribution.flavor=default, -Des.distribution.type=tar, -Des.bundled_jdk=true]
+[2020-01-08T13:17:07,508][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [aggs-matrix-stats]
+[2020-01-08T13:17:07,551][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [analysis-common]
+[2020-01-08T13:17:07,552][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [flattened]
+[2020-01-08T13:17:07,553][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [frozen-indices]
+[2020-01-08T13:17:07,554][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [ingest-common]
+[2020-01-08T13:17:07,554][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [ingest-geoip]
+[2020-01-08T13:17:07,555][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [ingest-user-agent]
+[2020-01-08T13:17:07,556][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [lang-expression]
+[2020-01-08T13:17:07,556][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [lang-mustache]
+[2020-01-08T13:17:07,558][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [lang-painless]
+[2020-01-08T13:17:07,559][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [mapper-extras]
+[2020-01-08T13:17:07,560][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [parent-join]
+[2020-01-08T13:17:07,560][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [percolator]
+[2020-01-08T13:17:07,561][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [rank-eval]
+[2020-01-08T13:17:07,562][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [reindex]
+[2020-01-08T13:17:07,563][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [repository-url]
+[2020-01-08T13:17:07,564][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [search-business-rules]
+[2020-01-08T13:17:07,564][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [spatial]
+[2020-01-08T13:17:07,565][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [transform]
+[2020-01-08T13:17:07,566][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [transport-netty4]
+[2020-01-08T13:17:07,566][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [vectors]
+[2020-01-08T13:17:07,567][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-analytics]
+[2020-01-08T13:17:07,568][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-ccr]
+[2020-01-08T13:17:07,569][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-core]
+[2020-01-08T13:17:07,570][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-deprecation]
+[2020-01-08T13:17:07,571][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-enrich]
+[2020-01-08T13:17:07,571][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-graph]
+[2020-01-08T13:17:07,572][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-ilm]
+[2020-01-08T13:17:07,573][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-logstash]
+[2020-01-08T13:17:07,573][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-ml]
+[2020-01-08T13:17:07,574][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-monitoring]
+[2020-01-08T13:17:07,575][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-rollup]
+[2020-01-08T13:17:07,576][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-security]
+[2020-01-08T13:17:07,577][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-sql]
+[2020-01-08T13:17:07,577][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-voting-only-node]
+[2020-01-08T13:17:07,578][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-watcher]
+[2020-01-08T13:17:07,580][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] no plugins loaded
+[2020-01-08T13:17:25,461][INFO ][o.e.x.s.a.s.FileRolesStore] [localhost.localdomain] parsed [0] roles from file [/usr/local/elasticsearch-7.5.1/config/roles.yml]
+[2020-01-08T13:17:32,384][INFO ][o.e.x.m.p.l.CppLogMessageHandler] [localhost.localdomain] [controller/9965] [Main.cc@110] controller (64 bit): Version 7.5.1 (Build ae3c3c51b849be) Copyright (c) 2019 Elasticsearch BV
+[2020-01-08T13:17:34,573][DEBUG][o.e.a.ActionModule       ] [localhost.localdomain] Using REST wrapper from plugin org.elasticsearch.xpack.security.Security
+[2020-01-08T13:17:35,706][INFO ][o.e.d.DiscoveryModule    ] [localhost.localdomain] using discovery type [zen] and seed hosts providers [settings]
+[2020-01-08T13:17:40,723][INFO ][o.e.n.Node               ] [localhost.localdomain] initialized
+[2020-01-08T13:17:40,723][INFO ][o.e.n.Node               ] [localhost.localdomain] starting ...
+[2020-01-08T13:17:42,730][INFO ][o.e.t.TransportService   ] [localhost.localdomain] publish_address {127.0.0.1:9300}, bound_addresses {[::1]:9300}, {127.0.0.1:9300}
+[2020-01-08T13:17:44,519][WARN ][o.e.b.BootstrapChecks    ] [localhost.localdomain] max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]
+[2020-01-08T13:17:44,546][WARN ][o.e.b.BootstrapChecks    ] [localhost.localdomain] max number of threads [3821] for user [songyu] is too low, increase to at least [4096]
+[2020-01-08T13:17:44,546][WARN ][o.e.b.BootstrapChecks    ] [localhost.localdomain] max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+[2020-01-08T13:17:44,547][WARN ][o.e.b.BootstrapChecks    ] [localhost.localdomain] the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured
+[2020-01-08T13:17:44,549][INFO ][o.e.c.c.Coordinator      ] [localhost.localdomain] cluster UUID [lWa_EOeXR-uPMKrfoGqGRA]
+[2020-01-08T13:17:45,033][INFO ][o.e.c.c.ClusterBootstrapService] [localhost.localdomain] no discovery configuration found, will perform best-effort cluster bootstrapping after [3s] unless existing master is discovered
+[2020-01-08T13:17:46,855][INFO ][o.e.c.s.MasterService    ] [localhost.localdomain] elected-as-master ([1] nodes joined)[{localhost.localdomain}{VpU5ozBkQTexK9eYcCO8Lw}{rmmyISXPSFG0iOU486TQ7g}{127.0.0.1}{127.0.0.1:9300}{dilm}{ml.machine_memory=1033527296, xpack.installed=true, ml.max_open_jobs=20} elect leader, _BECOME_MASTER_TASK_, _FINISH_ELECTION_], term: 2, version: 18, delta: master node changed {previous [], current [{localhost.localdomain}{VpU5ozBkQTexK9eYcCO8Lw}{rmmyISXPSFG0iOU486TQ7g}{127.0.0.1}{127.0.0.1:9300}{dilm}{ml.machine_memory=1033527296, xpack.installed=true, ml.max_open_jobs=20}]}
+[2020-01-08T13:17:47,514][INFO ][o.e.c.s.ClusterApplierService] [localhost.localdomain] master node changed {previous [], current [{localhost.localdomain}{VpU5ozBkQTexK9eYcCO8Lw}{rmmyISXPSFG0iOU486TQ7g}{127.0.0.1}{127.0.0.1:9300}{dilm}{ml.machine_memory=1033527296, xpack.installed=true, ml.max_open_jobs=20}]}, term: 2, version: 18, reason: Publication{term=2, version=18}
+[2020-01-08T13:17:49,172][INFO ][o.e.h.AbstractHttpServerTransport] [localhost.localdomain] publish_address {127.0.0.1:9200}, bound_addresses {[::1]:9200}, {127.0.0.1:9200}
+[2020-01-08T13:17:49,173][INFO ][o.e.n.Node               ] [localhost.localdomain] started
+[2020-01-08T13:17:49,885][INFO ][o.e.l.LicenseService     ] [localhost.localdomain] license [2e8d3241-b7be-49f9-b4bb-6d6fcca0bae5] mode [basic] - valid
+[2020-01-08T13:17:49,889][INFO ][o.e.x.s.s.SecurityStatusChangeListener] [localhost.localdomain] Active license is now [BASIC]; Security is disabled
+[2020-01-08T13:17:49,976][INFO ][o.e.g.GatewayService     ] [localhost.localdomain] recovered [0] indices into cluster_state
+...
 ```
 
-上述信息提示当前用户没有`/usr/local/elasticsearch-7.5.1/config/jvm.options`文件的操作权限。执行`[root@localhost config]# chmod 777 jvm.options`命令对`/usr/local/elasticsearch-7.5.1/config/jvm.options`、`/usr/local/elasticsearch-7.5.1/config/elasticsearch.yml`等文件赋予权限后再次启动：
+### 验证
 
-## 启动kafka-manager
-
-`kafka-manager`默认访问端口是`9000`，开放此端口：
+`ElasticSearch`的默认HTTP端口是`9200`，TCP端口是`9300`，执行以下命令访问`9200`端口：
 
 ```
-[root@localhost conf]# firewall-cmd --query-port=9000/tcp
-no
-[root@localhost conf]# firewall-cmd --permanent --zone=public --add-port=9000/tcp
-success
-[root@localhost conf]# firewall-cmd --reload
-success
-[root@localhost conf]# firewall-cmd --query-port=9000/tcp
-yes
+[songyu@localhost config]$ curl localhost:9200
+{
+  "name" : "localhost.localdomain",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "lWa_EOeXR-uPMKrfoGqGRA",
+  "version" : {
+    "number" : "7.5.1",
+    "build_flavor" : "default",
+    "build_type" : "tar",
+    "build_hash" : "3ae9ac9a93c95bd0cdc054951cf95d88e1e18d96",
+    "build_date" : "2019-12-16T22:57:37.835892Z",
+    "build_snapshot" : false,
+    "lucene_version" : "8.3.0",
+    "minimum_wire_compatibility_version" : "6.8.0",
+    "minimum_index_compatibility_version" : "6.0.0-beta1"
+  },
+  "tagline" : "You Know, for Search"
+}
 ```
 
-使用以下命令启动`kafka-manager`，浏览器中输入`http://192.168.80.129:9000`即可访问`kafka-manager`：
+或者在浏览器中直接访问`9200`端口，访问结果和命令行访问一样，都是一个JSON对象。
 
-```
-[root@localhost bin]# ./kafka-manager
-```
-
-或者
-
-```
-[root@localhost bin]# nohup ./kafka-manager &
-```
-
-当`kafka-manager`启动异常时，删掉`application.home_IS_UNDEFINED`、`RUNNING_PID`、`nohup.out`后再次执行上述启动命令：
-
-```
-[root@localhost kafka-manager-1.3.3.18]# rm -rf application.home_IS_UNDEFINED/
-[root@localhost kafka-manager-1.3.3.18]# rm -rf RUNNING_PID
-```
-
-## 关闭kafka-manager
-
-使用`ps -ef|grep kafka-manager`命令或者`jps`命令查看`kafka-manager`进程，然后杀掉进程即可：
-
-```
-[root@localhost bin]# ps -ef|grep kafka-manager
-root      9176  5907  8 15:03 pts/1    00:01:07 /usr/java/jdk1.8.0_181-amd64/bin/java -Duser.dir=/usr/local/kafka-manager-1.3.3.18 -cp /usr/local/kafka-manager-1.3.3.18/lib/../conf/:/usr/local/kafka-manager-1.3.3.18/lib/kafka-manager.kafka-manager-1.3.3.18-sans-externalized.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.twirl-api_2.11-1.1.1.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.commons.commons-lang3-3.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.play-server_2.11-2.4.6.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.play_2.11-2.4.6.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.build-link-2.4.6.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.play-exceptions-2.4.6.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.javassist.javassist-3.19.0-GA.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.play-iteratees_2.11-2.4.6.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.scala-stm.scala-stm_2.11-0.7.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.config-1.3.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.play-json_2.11-2.4.6.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.play-functional_2.11-2.4.6.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.play-datacommons_2.11-2.4.6.jar:/usr/local/kafka-manager-1.3.3.18/lib/joda-time.joda-time-2.8.1.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.joda.joda-convert-1.7.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.fasterxml.jackson.datatype.jackson-datatype-jdk8-2.5.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.5.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.play-netty-utils-2.4.6.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.slf4j.jul-to-slf4j-1.7.12.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.slf4j.jcl-over-slf4j-1.7.12.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.scala-lang.modules.scala-parser-combinators_2.11-1.0.1.jar:/usr/local/kafka-manager-1.3.3.18/lib/ch.qos.logback.logback-core-1.1.3.jar:/usr/local/kafka-manager-1.3.3.18/lib/ch.qos.logback.logback-classic-1.1.3.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.akka.akka-actor_2.11-2.3.14.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.akka.akka-slf4j_2.11-2.3.14.jar:/usr/localkafka-manager-1.3.3.18/lib/commons-codec.commons-codec-1.10.jar:/usr/local/kafka-manager-1.3.3.18/lib/xerces.xercesImpl-2.11.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/xml-apis.xml-apis-1.4.01.jar:/usr/local/kafka-manager-1.3.3.18/lib/javax.transaction.jta-1.1.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.google.inject.guice-4.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/javax.inject.javax.inject-1.jar:/usr/local/kafka-manager-1.3.3.18/lib/aopalliance.aopalliance-1.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.google.guava.guava-16.0.1.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.google.inject.extensions.guice-assistedinject-4.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.play.play-netty-server_2.11-2.4.6.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.netty.netty-http-pipelining-1.1.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.google.code.findbugs.jsr305-2.0.1.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.webjars-play_2.11-2.4.0-2.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.requirejs-2.1.20.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.webjars-locator-0.28.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.webjars-locator-core-0.27.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.commons.commons-compress-1.9.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.npm.validate.js-0.8.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.bootstrap-3.3.5.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.jquery-2.1.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.backbonejs-1.2.3.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.underscorejs-1.8.3.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.dustjs-linkedin-2.6.1-1.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.webjars.json-20121008-1.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.curator.curator-framework-2.10.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.curator.curator-client-2.10.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/jline.jline-0.9.94.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.curator.curator-recipes-2.10.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.json4s.json4s-jackson_2.11-3.4.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.json4s.json4s-core_2.11-3.4.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.json4s.json4s-ast_2.11-3.4.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.json4s.json4s-scalap_2.11-3.4.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.thoughtworks.paranamer.paranamer-2.8.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.scala-lang.modules.scala-xml_2.11-1.0.5.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.json4s.json4s-scalaz_2.11-3.4.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.scalaz.scalaz-core_2.11-7.2.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.slf4j.log4j-over-slf4j-1.7.12.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.adrianhurt.play-bootstrap3_2.11-0.4.5-P24.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.clapper.grizzled-slf4j_2.11-1.0.2.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.kafka.kafka_2.11-1.1.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.kafka.kafka-clients-1.1.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.lz4.lz4-java-1.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.xerial.snappy.snappy-java-1.1.7.1.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.slf4j.slf4j-api-1.7.25.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.fasterxml.jackson.core.jackson-databind-2.9.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.fasterxml.jackson.core.jackson-annotations-2.9.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.fasterxml.jackson.core.jackson-core-2.9.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/net.sf.jopt-simple.jopt-simple-5.0.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.yammer.metrics.metrics-core-2.2.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.scala-lang.scala-library-2.11.12.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.scala-lang.scala-reflect-2.11.12.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.typesafe.scala-logging.scala-logging_2.11-3.7.2.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.101tec.zkclient-0.10.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.zookeeper.zookeeper-3.4.10.jar:/usr/local/kafka-manager-1.3.3.18/lib/io.netty.netty-3.10.5.Final.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.kafka.kafka-streams-1.1.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.kafka.connect-json-1.1.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.apache.kafka.connect-api-1.1.0.jar:/usr/local/kafka-manager-1.3.3.18/lib/org.rocksdb.rocksdbjni-5.7.3.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.beachape.enumeratum_2.11-1.4.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.beachape.enumeratum-macros_2.11-1.4.4.jar:/usr/local/kafka-manager-1.3.3.18/lib/com.github.ben-manes.caffeine.caffeine-2.6.2.jar:/usr/local/kafka-manager-1.3.3.18/lib/kafka-manager.kafka-manager-1.3.3.18-assets.jar play.core.server.ProdServerStart
-root     10007  5907  2 15:15 pts/1    00:00:00 grep --color=auto kafka-manager
-[root@localhost bin]# jps
-9176 ProdServerStart
-4427 QuorumPeerMain
-10011 Jps
-5247 Kafka
-```
-
-## 使用kafka-manager
-
-### Add Cluster
-
-![](/image/2018/2018-12-03-kafka-manager-1.PNG)
-
-点击`Cluster`->`Add Cluster`，进入上图中所示的新增集群界面，依次输入`Cluster Name`、`Cluster Zookeeper Hosts`、`Kafka Version`，点击`Save`保存，新增集群后的界面如下图所示：
-
-![](/image/2018/2018-12-03-kafka-manager-2.PNG)
-
-点击集群名称进入`Summary`界面：
-
-![](/image/2018/2018-12-03-kafka-manager-3.PNG)
-
-在`Summary`界面可查看`Topics`、`Brokers`：
-
-![](/image/2018/2018-12-03-kafka-manager-4.PNG)
-
-![](/image/2018/2018-12-03-kafka-manager-5.PNG)
-
-### Create Topic
-
-![](/image/2018/2018-12-03-kafka-manager-6.PNG)
-
-点击`Topic`->`Create Topic`，进入上图中所示的新增主题界面，依次输入`Topic`、`Partitions`、`Replication Factor`，点击`Create`保存，新增主题后的界面如下图所示：
-
-![](/image/2018/2018-12-03-kafka-manager-7.PNG)
-
-* [参考：kafka-manager维护工具使用指南](https://blog.csdn.net/xhpscdx/article/details/76670209)
-* [参考：kafka集群管理工具kafka-manager部署安装](https://www.cnblogs.com/dadonggg/p/8205302.html)
+* [参考：ElasticSearch 学习笔记](https://segmentfault.com/a/1190000016651566)
+* [参考：Elasticsearch 7.x 最详细安装及配置](https://segmentfault.com/a/1190000020134018)
+* [参考：elasticsearch的安装及常见问题解决](https://blog.csdn.net/dajienet/article/details/80009391)
