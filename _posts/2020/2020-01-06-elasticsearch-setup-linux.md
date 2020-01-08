@@ -71,33 +71,73 @@ elasticsearch-7.5.1/lib/joda-time-2.10.3.jar
 ...
 ```
 
+* 修改文件拥有者：
+
+```
+[root@localhost local]# chown -R songyu ./elasticsearch-7.5.1
+[root@localhost local]# ll
+总用量 283464
+drwxr-xr-x.  2 root   root           6 8月  12 2015 bin
+drwxr-xr-x.  9 songyu root        4096 12月 17 07:01 elasticsearch-7.5.1
+-rw-r--r--.  1 root   root   290094012 1月   7 14:43 elasticsearch-7.5.1-linux-x86_64.tar.gz
+drwxr-xr-x.  2 root   root           6 8月  12 2015 etc
+drwxr-xr-x.  2 root   root           6 8月  12 2015 games
+drwxr-xr-x.  2 root   root           6 8月  12 2015 include
+drwxr-xr-x.  7 root   root          94 11月 19 2018 kafka_2.12-2.0.0
+drwxr-xr-x.  2 root   root           6 8月  12 2015 lib
+drwxr-xr-x.  2 root   root           6 8月  12 2015 lib64
+drwxr-xr-x.  2 root   root           6 8月  12 2015 libexec
+drwxr-xr-x.  2 root   root           6 8月  12 2015 sbin
+drwxr-xr-x.  5 root   root          46 11月 15 2018 share
+drwxr-xr-x.  2 root   root           6 8月  12 2015 src
+drwxr-xr-x. 12 songyu songyu      4096 11月 19 2018 zookeeper-3.4.12
+-rw-r--r--.  1 root   root      161083 11月 30 19:14 zookeeper.out
+```
+
 ## 启动Elasticsearch
 
-从[Elasticsearch](https://www.elastic.co/cn/)下载的源码包需要编译，此处使用已经编译好的`Elasticsearch`的安装步骤如下：
-* 进入使用[Bitvise SSH Client](https://www.bitvise.com/ssh-client)工具将编译好的`kafka-manager-1.3.3.18.zip`复制到`/usr/local/`路径，此处使用`192.168.80.129`
-* 将`kafka-manager-1.3.3.18.zip`包解压至`/usr/local/`路径：
+### 权限错误
+
+执行以下命令进行启动`./bin/elasticsearch`,报以下错误：
 
 ```
-[root@localhost local]# unzip kafka-manager-1.3.3.18.zip
-Archive:  kafka-manager-1.3.3.18.zip
-  inflating: kafka-manager-1.3.3.18/lib/kafka-manager.kafka-manager-1.3.3.18-sans-externalized.jar  
-  inflating: kafka-manager-1.3.3.18/lib/com.typesafe.play.twirl-api_2.11-1.1.1.jar  
-  inflating: kafka-manager-1.3.3.18/lib/org.apache.commons.commons-lang3-3.4.jar  
-  inflating: kafka-manager-1.3.3.18/lib/com.typesafe.play.play-server_2.11-2.4.6.jar  
-  inflating: kafka-manager-1.3.3.18/lib/com.typesafe.play.play_2.11-2.4.6.jar  
-  inflating: kafka-manager-1.3.3.18/lib/com.typesafe.play.build-link-2.4.6.jar  
-  inflating: kafka-manager-1.3.3.18/lib/com.typesafe.play.play-exceptions-2.4.6.jar  
-  inflating: kafka-manager-1.3.3.18/lib/org.javassist.javassist-3.19.0-GA.jar  
-  inflating: kafka-manager-1.3.3.18/lib/com.typesafe.play.play-iteratees_2.11-2.4.6.jar  
-  inflating: kafka-manager-1.3.3.18/lib/org.scala-stm.scala-stm_2.11-0.7.jar
-...
+[root@localhost elasticsearch-7.5.1]# ./bin/elasticsearch
+future versions of Elasticsearch will require Java 11; your Java version from [/usr/java/jdk1.8.0_191-amd64/jre] does not meet this requirement
+[2020-01-07T16:16:42,662][WARN ][o.e.b.ElasticsearchUncaughtExceptionHandler] [localhost.localdomain] uncaught exception in thread [main]
+org.elasticsearch.bootstrap.StartupException: java.lang.RuntimeException: can not run elasticsearch as root
+	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:163) ~[elasticsearch-7.5.1.jar:7.5.1]
+	at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:150) ~[elasticsearch-7.5.1.jar:7.5.1]
+	at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:86) ~[elasticsearch-7.5.1.jar:7.5.1]
+	at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:125) ~[elasticsearch-cli-7.5.1.jar:7.5.1]
+	at org.elasticsearch.cli.Command.main(Command.java:90) ~[elasticsearch-cli-7.5.1.jar:7.5.1]
+	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:115) ~[elasticsearch-7.5.1.jar:7.5.1]
+	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:92) ~[elasticsearch-7.5.1.jar:7.5.1]
+Caused by: java.lang.RuntimeException: can not run elasticsearch as root
+	at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:105) ~[elasticsearch-7.5.1.jar:7.5.1]
+	at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:172) ~[elasticsearch-7.5.1.jar:7.5.1]
+	at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:349) ~[elasticsearch-7.5.1.jar:7.5.1]
+	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:159) ~[elasticsearch-7.5.1.jar:7.5.1]
+	... 6 more
 ```
 
-* 进入`/usr/local/kafka-manager-1.3.3.18/conf`目录，修改`application.conf`，保存并关闭：
+上述信息提示不能以`root`用户启动`Elasticsearch`，遂切换至`songyu`用户进行启动，报以下错误:
 
 ```
-kafka-manager.zkhosts="192.168.80.129:2181,192.168.80.130:2181,192.168.80.131:2181"
+[songyu@localhost elasticsearch-7.5.1]$ ./bin/elasticsearch
+future versions of Elasticsearch will require Java 11; your Java version from [/usr/java/jdk1.8.0_191-amd64/jre] does not meet this requirement
+Exception in thread "main" java.nio.file.AccessDeniedException: /usr/local/elasticsearch-7.5.1/config/jvm.options
+	at sun.nio.fs.UnixException.translateToIOException(UnixException.java:84)
+	at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:102)
+	at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:107)
+	at sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:214)
+	at java.nio.file.Files.newByteChannel(Files.java:361)
+	at java.nio.file.Files.newByteChannel(Files.java:407)
+	at java.nio.file.spi.FileSystemProvider.newInputStream(FileSystemProvider.java:384)
+	at java.nio.file.Files.newInputStream(Files.java:152)
+	at org.elasticsearch.tools.launchers.JvmOptionsParser.main(JvmOptionsParser.java:62)
 ```
+
+上述信息提示当前用户没有`/usr/local/elasticsearch-7.5.1/config/jvm.options`文件的操作权限。执行`[root@localhost config]# chmod 777 jvm.options`命令对`/usr/local/elasticsearch-7.5.1/config/jvm.options`、`/usr/local/elasticsearch-7.5.1/config/elasticsearch.yml`等文件赋予权限后再次启动：
 
 ## 启动kafka-manager
 
