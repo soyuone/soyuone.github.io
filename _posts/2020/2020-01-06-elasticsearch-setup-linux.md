@@ -94,9 +94,103 @@ drwxr-xr-x. 12 songyu songyu      4096 11月 19 2018 zookeeper-3.4.12
 -rw-r--r--.  1 root   root      161083 11月 30 19:14 zookeeper.out
 ```
 
+* 修改`/config/elasticsearch.yml`配置文件，如下所示：
+
+```
+# ======================== Elasticsearch Configuration =========================
+#
+# NOTE: Elasticsearch comes with reasonable defaults for most settings.
+#       Before you set out to tweak and tune the configuration, make sure you
+#       understand what are you trying to accomplish and the consequences.
+#
+# The primary way of configuring a node is via this file. This template lists
+# the most important settings you may want to configure for a production cluster.
+#
+# Please consult the documentation for further information on configuration options:
+# https://www.elastic.co/guide/en/elasticsearch/reference/index.html
+#
+# ---------------------------------- Cluster -----------------------------------
+#
+# Use a descriptive name for your cluster:
+#
+#cluster.name: my-application
+#
+# ------------------------------------ Node ------------------------------------
+#
+# Use a descriptive name for the node:
+#
+ node.name: node-1
+#
+# Add custom attributes to the node:
+#
+#node.attr.rack: r1
+#
+# ----------------------------------- Paths ------------------------------------
+#
+# Path to directory where to store the data (separate multiple locations by comma):
+#
+#path.data: /path/to/data
+#
+# Path to log files:
+#
+#path.logs: /path/to/logs
+#
+# ----------------------------------- Memory -----------------------------------
+#
+# Lock the memory on startup:
+#
+#bootstrap.memory_lock: true
+#
+# Make sure that the heap size is set to about half the memory available
+# on the system and that the owner of the process is allowed to use this
+# limit.
+#
+# Elasticsearch performs poorly when the system is swapping the memory.
+#
+# ---------------------------------- Network -----------------------------------
+#
+# Set the bind address to a specific IP (IPv4 or IPv6):
+#
+ network.host: 0.0.0.0
+#
+# Set a custom port for HTTP:
+#
+ http.port: 9200
+#
+# For more information, consult the network module documentation.
+#
+# --------------------------------- Discovery ----------------------------------
+#
+# Pass an initial list of hosts to perform discovery when this node is started:
+# The default list of hosts is ["127.0.0.1", "[::1]"]
+#
+#discovery.seed_hosts: ["host1", "host2"]
+#
+# Bootstrap the cluster using an initial set of master-eligible nodes:
+#
+#cluster.initial_master_nodes: ["node-1", "node-2"]
+ cluster.initial_master_nodes: ["node-1"]
+#
+# For more information, consult the discovery and cluster formation module documentation.
+#
+# ---------------------------------- Gateway -----------------------------------
+#
+# Block initial recovery after a full cluster restart until N nodes are started:
+#
+#gateway.recover_after_nodes: 3
+#
+# For more information, consult the gateway module documentation.
+#
+# ---------------------------------- Various -----------------------------------
+#
+# Require explicit names when deleting indices:
+#
+#action.destructive_requires_name: true
+```
+
 ## 启动Elasticsearch
 
-### root启动报错
+### root用户启动报错
 
 执行以下命令进行启动`./bin/elasticsearch`：
 
@@ -124,75 +218,134 @@ Caused by: java.lang.RuntimeException: can not run elasticsearch as root
 
 ### 其它用户启动
 
-遂切换至`songyu`用户执行`./bin/elasticsearch`命令进行启动，启动成功:
+遂切换至`songyu`用户执行`./bin/elasticsearch`命令进行启动，报以下错误:
 
 ```
 [songyu@localhost elasticsearch-7.5.1]$ ./bin/elasticsearch
 future versions of Elasticsearch will require Java 11; your Java version from [/usr/java/jdk1.8.0_191-amd64/jre] does not meet this requirement
-[2020-01-08T13:16:24,718][INFO ][o.e.e.NodeEnvironment    ] [localhost.localdomain] using [1] data paths, mounts [[/ (rootfs)]], net usable_space [10.1gb], net total_space [13.7gb], types [rootfs]
-[2020-01-08T13:16:24,778][INFO ][o.e.e.NodeEnvironment    ] [localhost.localdomain] heap size [990.7mb], compressed ordinary object pointers [true]
-[2020-01-08T13:16:24,832][INFO ][o.e.n.Node               ] [localhost.localdomain] node name [localhost.localdomain], node ID [VpU5ozBkQTexK9eYcCO8Lw], cluster name [elasticsearch]
-[2020-01-08T13:16:24,833][INFO ][o.e.n.Node               ] [localhost.localdomain] version[7.5.1], pid[9876], build[default/tar/3ae9ac9a93c95bd0cdc054951cf95d88e1e18d96/2019-12-16T22:57:37.835892Z], OS[Linux/3.10.0-327.el7.x86_64/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_191/25.191-b12]
-[2020-01-08T13:16:24,835][INFO ][o.e.n.Node               ] [localhost.localdomain] JVM home [/usr/java/jdk1.8.0_191-amd64/jre]
-[2020-01-08T13:16:24,837][INFO ][o.e.n.Node               ] [localhost.localdomain] JVM arguments [-Des.networkaddress.cache.ttl=60, -Des.networkaddress.cache.negative.ttl=10, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dio.netty.allocator.numDirectArenas=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -Djava.locale.providers=COMPAT, -Xms1g, -Xmx1g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -Djava.io.tmpdir=/tmp/elasticsearch-5143197216165547241, -XX:+HeapDumpOnOutOfMemoryError, -XX:HeapDumpPath=data, -XX:ErrorFile=logs/hs_err_pid%p.log, -XX:+PrintGCDetails, -XX:+PrintGCDateStamps, -XX:+PrintTenuringDistribution, -XX:+PrintGCApplicationStoppedTime, -Xloggc:logs/gc.log, -XX:+UseGCLogFileRotation, -XX:NumberOfGCLogFiles=32, -XX:GCLogFileSize=64m, -XX:MaxDirectMemorySize=536870912, -Des.path.home=/usr/local/elasticsearch-7.5.1, -Des.path.conf=/usr/local/elasticsearch-7.5.1/config, -Des.distribution.flavor=default, -Des.distribution.type=tar, -Des.bundled_jdk=true]
-[2020-01-08T13:17:07,508][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [aggs-matrix-stats]
-[2020-01-08T13:17:07,551][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [analysis-common]
-[2020-01-08T13:17:07,552][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [flattened]
-[2020-01-08T13:17:07,553][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [frozen-indices]
-[2020-01-08T13:17:07,554][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [ingest-common]
-[2020-01-08T13:17:07,554][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [ingest-geoip]
-[2020-01-08T13:17:07,555][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [ingest-user-agent]
-[2020-01-08T13:17:07,556][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [lang-expression]
-[2020-01-08T13:17:07,556][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [lang-mustache]
-[2020-01-08T13:17:07,558][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [lang-painless]
-[2020-01-08T13:17:07,559][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [mapper-extras]
-[2020-01-08T13:17:07,560][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [parent-join]
-[2020-01-08T13:17:07,560][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [percolator]
-[2020-01-08T13:17:07,561][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [rank-eval]
-[2020-01-08T13:17:07,562][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [reindex]
-[2020-01-08T13:17:07,563][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [repository-url]
-[2020-01-08T13:17:07,564][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [search-business-rules]
-[2020-01-08T13:17:07,564][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [spatial]
-[2020-01-08T13:17:07,565][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [transform]
-[2020-01-08T13:17:07,566][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [transport-netty4]
-[2020-01-08T13:17:07,566][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [vectors]
-[2020-01-08T13:17:07,567][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-analytics]
-[2020-01-08T13:17:07,568][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-ccr]
-[2020-01-08T13:17:07,569][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-core]
-[2020-01-08T13:17:07,570][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-deprecation]
-[2020-01-08T13:17:07,571][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-enrich]
-[2020-01-08T13:17:07,571][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-graph]
-[2020-01-08T13:17:07,572][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-ilm]
-[2020-01-08T13:17:07,573][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-logstash]
-[2020-01-08T13:17:07,573][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-ml]
-[2020-01-08T13:17:07,574][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-monitoring]
-[2020-01-08T13:17:07,575][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-rollup]
-[2020-01-08T13:17:07,576][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-security]
-[2020-01-08T13:17:07,577][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-sql]
-[2020-01-08T13:17:07,577][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-voting-only-node]
-[2020-01-08T13:17:07,578][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-watcher]
-[2020-01-08T13:17:07,580][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] no plugins loaded
-[2020-01-08T13:17:25,461][INFO ][o.e.x.s.a.s.FileRolesStore] [localhost.localdomain] parsed [0] roles from file [/usr/local/elasticsearch-7.5.1/config/roles.yml]
-[2020-01-08T13:17:32,384][INFO ][o.e.x.m.p.l.CppLogMessageHandler] [localhost.localdomain] [controller/9965] [Main.cc@110] controller (64 bit): Version 7.5.1 (Build ae3c3c51b849be) Copyright (c) 2019 Elasticsearch BV
-[2020-01-08T13:17:34,573][DEBUG][o.e.a.ActionModule       ] [localhost.localdomain] Using REST wrapper from plugin org.elasticsearch.xpack.security.Security
-[2020-01-08T13:17:35,706][INFO ][o.e.d.DiscoveryModule    ] [localhost.localdomain] using discovery type [zen] and seed hosts providers [settings]
-[2020-01-08T13:17:40,723][INFO ][o.e.n.Node               ] [localhost.localdomain] initialized
-[2020-01-08T13:17:40,723][INFO ][o.e.n.Node               ] [localhost.localdomain] starting ...
-[2020-01-08T13:17:42,730][INFO ][o.e.t.TransportService   ] [localhost.localdomain] publish_address {127.0.0.1:9300}, bound_addresses {[::1]:9300}, {127.0.0.1:9300}
-[2020-01-08T13:17:44,519][WARN ][o.e.b.BootstrapChecks    ] [localhost.localdomain] max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]
-[2020-01-08T13:17:44,546][WARN ][o.e.b.BootstrapChecks    ] [localhost.localdomain] max number of threads [3821] for user [songyu] is too low, increase to at least [4096]
-[2020-01-08T13:17:44,546][WARN ][o.e.b.BootstrapChecks    ] [localhost.localdomain] max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
-[2020-01-08T13:17:44,547][WARN ][o.e.b.BootstrapChecks    ] [localhost.localdomain] the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured
-[2020-01-08T13:17:44,549][INFO ][o.e.c.c.Coordinator      ] [localhost.localdomain] cluster UUID [lWa_EOeXR-uPMKrfoGqGRA]
-[2020-01-08T13:17:45,033][INFO ][o.e.c.c.ClusterBootstrapService] [localhost.localdomain] no discovery configuration found, will perform best-effort cluster bootstrapping after [3s] unless existing master is discovered
-[2020-01-08T13:17:46,855][INFO ][o.e.c.s.MasterService    ] [localhost.localdomain] elected-as-master ([1] nodes joined)[{localhost.localdomain}{VpU5ozBkQTexK9eYcCO8Lw}{rmmyISXPSFG0iOU486TQ7g}{127.0.0.1}{127.0.0.1:9300}{dilm}{ml.machine_memory=1033527296, xpack.installed=true, ml.max_open_jobs=20} elect leader, _BECOME_MASTER_TASK_, _FINISH_ELECTION_], term: 2, version: 18, delta: master node changed {previous [], current [{localhost.localdomain}{VpU5ozBkQTexK9eYcCO8Lw}{rmmyISXPSFG0iOU486TQ7g}{127.0.0.1}{127.0.0.1:9300}{dilm}{ml.machine_memory=1033527296, xpack.installed=true, ml.max_open_jobs=20}]}
-[2020-01-08T13:17:47,514][INFO ][o.e.c.s.ClusterApplierService] [localhost.localdomain] master node changed {previous [], current [{localhost.localdomain}{VpU5ozBkQTexK9eYcCO8Lw}{rmmyISXPSFG0iOU486TQ7g}{127.0.0.1}{127.0.0.1:9300}{dilm}{ml.machine_memory=1033527296, xpack.installed=true, ml.max_open_jobs=20}]}, term: 2, version: 18, reason: Publication{term=2, version=18}
-[2020-01-08T13:17:49,172][INFO ][o.e.h.AbstractHttpServerTransport] [localhost.localdomain] publish_address {127.0.0.1:9200}, bound_addresses {[::1]:9200}, {127.0.0.1:9200}
-[2020-01-08T13:17:49,173][INFO ][o.e.n.Node               ] [localhost.localdomain] started
-[2020-01-08T13:17:49,885][INFO ][o.e.l.LicenseService     ] [localhost.localdomain] license [2e8d3241-b7be-49f9-b4bb-6d6fcca0bae5] mode [basic] - valid
-[2020-01-08T13:17:49,889][INFO ][o.e.x.s.s.SecurityStatusChangeListener] [localhost.localdomain] Active license is now [BASIC]; Security is disabled
-[2020-01-08T13:17:49,976][INFO ][o.e.g.GatewayService     ] [localhost.localdomain] recovered [0] indices into cluster_state
-...
+[2020-01-08T21:41:18,263][INFO ][o.e.e.NodeEnvironment    ] [localhost.localdomain] using [1] data paths, mounts [[/ (rootfs)]], net usable_space [10.1gb], net total_space [13.7gb], types [rootfs]
+[2020-01-08T21:41:18,362][INFO ][o.e.e.NodeEnvironment    ] [localhost.localdomain] heap size [990.7mb], compressed ordinary object pointers [true]
+[2020-01-08T21:41:18,604][INFO ][o.e.n.Node               ] [localhost.localdomain] node name [localhost.localdomain], node ID [VpU5ozBkQTexK9eYcCO8Lw], cluster name [elasticsearch]
+[2020-01-08T21:41:18,606][INFO ][o.e.n.Node               ] [localhost.localdomain] version[7.5.1], pid[4097], build[default/tar/3ae9ac9a93c95bd0cdc054951cf95d88e1e18d96/2019-12-16T22:57:37.835892Z], OS[Linux/3.10.0-327.el7.x86_64/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_191/25.191-b12]
+[2020-01-08T21:41:18,607][INFO ][o.e.n.Node               ] [localhost.localdomain] JVM home [/usr/java/jdk1.8.0_191-amd64/jre]
+[2020-01-08T21:41:18,621][INFO ][o.e.n.Node               ] [localhost.localdomain] JVM arguments [-Des.networkaddress.cache.ttl=60, -Des.networkaddress.cache.negative.ttl=10, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dio.netty.allocator.numDirectArenas=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -Djava.locale.providers=COMPAT, -Xms1g, -Xmx1g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -Djava.io.tmpdir=/tmp/elasticsearch-4876338172898090526, -XX:+HeapDumpOnOutOfMemoryError, -XX:HeapDumpPath=data, -XX:ErrorFile=logs/hs_err_pid%p.log, -XX:+PrintGCDetails, -XX:+PrintGCDateStamps, -XX:+PrintTenuringDistribution, -XX:+PrintGCApplicationStoppedTime, -Xloggc:logs/gc.log, -XX:+UseGCLogFileRotation, -XX:NumberOfGCLogFiles=32, -XX:GCLogFileSize=64m, -XX:MaxDirectMemorySize=536870912, -Des.path.home=/usr/local/elasticsearch-7.5.1, -Des.path.conf=/usr/local/elasticsearch-7.5.1/config, -Des.distribution.flavor=default, -Des.distribution.type=tar, -Des.bundled_jdk=true]
+[2020-01-08T21:42:17,667][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [aggs-matrix-stats]
+[2020-01-08T21:42:17,705][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [analysis-common]
+[2020-01-08T21:42:17,706][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [flattened]
+[2020-01-08T21:42:17,706][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [frozen-indices]
+[2020-01-08T21:42:17,707][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [ingest-common]
+[2020-01-08T21:42:17,708][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [ingest-geoip]
+[2020-01-08T21:42:17,709][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [ingest-user-agent]
+[2020-01-08T21:42:17,710][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [lang-expression]
+[2020-01-08T21:42:17,711][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [lang-mustache]
+[2020-01-08T21:42:17,712][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [lang-painless]
+[2020-01-08T21:42:17,713][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [mapper-extras]
+[2020-01-08T21:42:17,714][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [parent-join]
+[2020-01-08T21:42:17,715][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [percolator]
+[2020-01-08T21:42:17,715][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [rank-eval]
+[2020-01-08T21:42:17,716][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [reindex]
+[2020-01-08T21:42:17,717][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [repository-url]
+[2020-01-08T21:42:17,717][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [search-business-rules]
+[2020-01-08T21:42:17,719][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [spatial]
+[2020-01-08T21:42:17,720][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [transform]
+[2020-01-08T21:42:17,721][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [transport-netty4]
+[2020-01-08T21:42:17,722][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [vectors]
+[2020-01-08T21:42:17,722][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-analytics]
+[2020-01-08T21:42:17,723][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-ccr]
+[2020-01-08T21:42:17,724][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-core]
+[2020-01-08T21:42:17,724][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-deprecation]
+[2020-01-08T21:42:17,725][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-enrich]
+[2020-01-08T21:42:17,726][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-graph]
+[2020-01-08T21:42:17,726][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-ilm]
+[2020-01-08T21:42:17,727][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-logstash]
+[2020-01-08T21:42:17,728][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-ml]
+[2020-01-08T21:42:17,728][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-monitoring]
+[2020-01-08T21:42:17,730][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-rollup]
+[2020-01-08T21:42:17,731][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-security]
+[2020-01-08T21:42:17,732][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-sql]
+[2020-01-08T21:42:17,733][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-voting-only-node]
+[2020-01-08T21:42:17,734][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] loaded module [x-pack-watcher]
+[2020-01-08T21:42:17,737][INFO ][o.e.p.PluginsService     ] [localhost.localdomain] no plugins loaded
+[2020-01-08T21:42:42,307][INFO ][o.e.x.s.a.s.FileRolesStore] [localhost.localdomain] parsed [0] roles from file [/usr/local/elasticsearch-7.5.1/config/roles.yml]
+[2020-01-08T21:42:47,272][INFO ][o.e.x.m.p.l.CppLogMessageHandler] [localhost.localdomain] [controller/4276] [Main.cc@110] controller (64 bit): Version 7.5.1 (Build ae3c3c51b849be) Copyright (c) 2019 Elasticsearch BV
+[2020-01-08T21:42:49,522][DEBUG][o.e.a.ActionModule       ] [localhost.localdomain] Using REST wrapper from plugin org.elasticsearch.xpack.security.Security
+[2020-01-08T21:42:50,598][INFO ][o.e.d.DiscoveryModule    ] [localhost.localdomain] using discovery type [zen] and seed hosts providers [settings]
+[2020-01-08T21:42:55,717][INFO ][o.e.n.Node               ] [localhost.localdomain] initialized
+[2020-01-08T21:42:55,726][INFO ][o.e.n.Node               ] [localhost.localdomain] starting ...
+[2020-01-08T21:42:57,487][INFO ][o.e.t.TransportService   ] [localhost.localdomain] publish_address {192.168.80.130:9300}, bound_addresses {[::]:9300}
+[2020-01-08T21:42:58,914][INFO ][o.e.b.BootstrapChecks    ] [localhost.localdomain] bound or publishing to a non-loopback address, enforcing bootstrap checks
+ERROR: [4] bootstrap checks failed
+[1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]
+[2]: max number of threads [3821] for user [songyu] is too low, increase to at least [4096]
+[3]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+[4]: the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured
+[2020-01-08T21:42:59,042][INFO ][o.e.n.Node               ] [localhost.localdomain] stopping ...
+[2020-01-08T21:42:59,544][INFO ][o.e.n.Node               ] [localhost.localdomain] stopped
+[2020-01-08T21:42:59,545][INFO ][o.e.n.Node               ] [localhost.localdomain] closing ...
+[2020-01-08T21:42:59,649][INFO ][o.e.n.Node               ] [localhost.localdomain] closed
+[2020-01-08T21:42:59,654][INFO ][o.e.x.m.p.NativeController] [localhost.localdomain] Native controller process has stopped - no new native processes can be started
+```
+
+* 错误(1) 当前用户的软、硬限制过小，即es能打开的最大文件数量过小。在设定上，通常软限制会比硬限制小，硬限制是严格的设定，必定不能超过这个数值；软限制是警告的设定，可以超过这个设定的值，若超过则会有警告信息。
+
+```
+[1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]
+```
+
+查看当前用户的软限制`ulimit -S -n`、硬限制`ulimit -H -n`：
+
+```
+[songyu@localhost elasticsearch-7.5.1]$ ulimit -S -n
+1024
+[songyu@localhost elasticsearch-7.5.1]$ ulimit -H -n
+4096
+```
+
+修改软、硬限制数量，在`/etc/security/limits.conf`文件中追加以下配置：
+
+```
+* soft nofile 65535
+* hard nofile 65537
+```
+
+* 错误(2) 当前用户的最大线程数过小。
+
+```
+[2]: max number of threads [3821] for user [songyu] is too low, increase to at least [4096]
+```
+
+在`/etc/security/limits.conf`文件中追加以下配置：
+
+```
+* soft nproc 4096
+* hard nproc 4096
+```
+
+* 错误(3)
+
+```
+[3]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+```
+
+在`/etc/sysctl.conf`文件中追加以下配置：
+
+```
+vm.max_map_count=262144
+```
+
+执行命令`sysctl -p`使配置生效。
+
+* 错误(4)
+
+```
+[4]: the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured
+```
+
+将`/config/elasticsearch.yml`文件中`#node.name: node-1`、`#cluster.initial_master_nodes: ["node-1", "node-2"]`前面的注释去掉，并且后者仅保留一个节点即可，注意格式。
+
+```
+ node.name: node-1
+ cluster.initial_master_nodes: ["node-1"]
 ```
 
 ### 验证
@@ -200,9 +353,9 @@ future versions of Elasticsearch will require Java 11; your Java version from [/
 `ElasticSearch`的默认HTTP端口是`9200`，TCP端口是`9300`，执行以下命令访问`9200`端口：
 
 ```
-[songyu@localhost config]$ curl localhost:9200
+[songyu@localhost ~]$ curl localhost:9200
 {
-  "name" : "localhost.localdomain",
+  "name" : "node-1",
   "cluster_name" : "elasticsearch",
   "cluster_uuid" : "lWa_EOeXR-uPMKrfoGqGRA",
   "version" : {
@@ -222,6 +375,14 @@ future versions of Elasticsearch will require Java 11; your Java version from [/
 
 或者在浏览器中直接访问`9200`端口，访问结果和命令行访问一样，都是一个JSON对象。
 
+### 后台启动
+
+```
+[songyu@localhost elasticsearch-7.5.1]$ ./bin/elasticsearch -d
+```
+
 * [参考：ElasticSearch 学习笔记](https://segmentfault.com/a/1190000016651566)
 * [参考：Elasticsearch 7.x 最详细安装及配置](https://segmentfault.com/a/1190000020134018)
+* [参考：elasticsearch安装及启动异常解决](https://blog.csdn.net/happyzxs/article/details/89156068)
 * [参考：elasticsearch的安装及常见问题解决](https://blog.csdn.net/dajienet/article/details/80009391)
+* [参考：max file descriptors](https://blog.csdn.net/liyantianmin/article/details/81589795)
