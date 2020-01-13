@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Elasticsearch在Linux平台的安装和配置"
+title: "Elasticsearch、Kibana在Linux平台的安装和配置"
 categories: 大数据
-tags: 大数据 Elasticsearch
+tags: 大数据 Elasticsearch Kibana
 author: Kopite
 ---
 
@@ -10,7 +10,7 @@ author: Kopite
 {:toc}
 
 
-本文介绍`Elasticsearch`在Linux平台的安装及配置，`Elasticsearch`的安装需要Java的支持，与Java版本对应关系见[Elasticsearch and JVM](https://www.elastic.co/cn/support/matrix#matrix_jvm)。
+`Elasticsearch`的安装需要Java的支持，与Java版本对应关系见[Elasticsearch and JVM](https://www.elastic.co/cn/support/matrix#matrix_jvm)。
 
 
 
@@ -380,6 +380,118 @@ vm.max_map_count=262144
 ```
 [songyu@localhost elasticsearch-7.5.1]$ ./bin/elasticsearch -d
 ```
+
+## 安装Kibana
+
+`Kibana`的安装步骤如下：
+* 进入[Kibana官方网站](https://www.elastic.co/cn/downloads/kibana)，此处选择当前的版本`7.5.1版本`，找到`LINUX`，点击即可下载
+* 使用[Bitvise SSH Client](https://www.bitvise.com/ssh-client)工具将下载的`kibana-7.5.1-linux-x86_64.tar.gz`包复制到`/usr/local/`路径，复制完毕后查看该路径下是否有文件：
+
+```
+[root@localhost local]# ll
+总用量 233060
+drwxr-xr-x.  2 root   root           6 8月  12 2015 bin
+drwxr-xr-x. 10 songyu root        4096 1月   8 11:15 elasticsearch-7.5.1
+drwxr-xr-x.  2 root   root           6 8月  12 2015 etc
+drwxr-xr-x.  2 root   root           6 8月  12 2015 games
+drwxr-xr-x.  2 root   root           6 8月  12 2015 include
+drwxr-xr-x.  7 root   root          94 11月 19 2018 kafka_2.12-2.0.0
+-rw-r--r--.  1 root   root   238481011 1月  13 21:42 kibana-7.5.1-linux-x86_64.tar.gz
+drwxr-xr-x.  2 root   root           6 8月  12 2015 lib
+drwxr-xr-x.  2 root   root           6 8月  12 2015 lib64
+drwxr-xr-x.  2 root   root           6 8月  12 2015 libexec
+drwxr-xr-x.  2 root   root           6 8月  12 2015 sbin
+drwxr-xr-x.  5 root   root          46 11月 15 2018 share
+drwxr-xr-x.  2 root   root           6 8月  12 2015 src
+drwxr-xr-x. 12 songyu songyu      4096 11月 19 2018 zookeeper-3.4.12
+-rw-r--r--.  1 root   root      161083 11月 30 19:14 zookeeper.out
+```
+
+* 将`kibana-7.5.1-linux-x86_64.tar.gz`包解压至`/usr/local/`路径：
+
+```
+[root@localhost local]# tar -zxvf kibana-7.5.1-linux-x86_64.tar.gz
+```
+
+* 修改文件拥有者：
+
+```
+[root@localhost local]# chown -R songyu ./kibana-7.5.1-linux-x86_64
+[root@localhost local]# ll
+总用量 233064
+drwxr-xr-x.  2 root   root           6 8月  12 2015 bin
+drwxr-xr-x. 10 songyu root        4096 1月   8 11:15 elasticsearch-7.5.1
+drwxr-xr-x.  2 root   root           6 8月  12 2015 etc
+drwxr-xr-x.  2 root   root           6 8月  12 2015 games
+drwxr-xr-x.  2 root   root           6 8月  12 2015 include
+drwxr-xr-x.  7 root   root          94 11月 19 2018 kafka_2.12-2.0.0
+drwxr-xr-x. 13 songyu root        4096 1月  13 22:03 kibana-7.5.1-linux-x86_64
+-rw-r--r--.  1 root   root   238481011 1月  13 21:42 kibana-7.5.1-linux-x86_64.tar.gz
+drwxr-xr-x.  2 root   root           6 8月  12 2015 lib
+drwxr-xr-x.  2 root   root           6 8月  12 2015 lib64
+drwxr-xr-x.  2 root   root           6 8月  12 2015 libexec
+drwxr-xr-x.  2 root   root           6 8月  12 2015 sbin
+drwxr-xr-x.  5 root   root          46 11月 15 2018 share
+drwxr-xr-x.  2 root   root           6 8月  12 2015 src
+drwxr-xr-x. 12 songyu songyu      4096 11月 19 2018 zookeeper-3.4.12
+-rw-r--r--.  1 root   root      161083 11月 30 19:14 zookeeper.out
+```
+
+* 修改`/config/kibana.yml`配置文件中的`server.host`、`elasticsearch.hosts`，如下所示：
+
+```
+# Specifies the address to which the Kibana server will bind. IP addresses and host names are both valid values.
+# The default is 'localhost', which usually means remote machines will not be able to connect.
+# To allow connections from remote users, set this parameter to a non-loopback address.
+#server.host: "localhost"
+ server.host: "192.168.80.130"
+```
+
+```
+# The URLs of the Elasticsearch instances to use for all your queries.
+#elasticsearch.hosts: ["http://localhost:9200"]
+ elasticsearch.hosts: "http://192.168.80.130:9200"
+```
+
+### 启动
+
+执行`./bin/kibana`命令进行启动，报以下错误：
+
+```
+[songyu@localhost kibana-7.5.1-linux-x86_64]$ ./bin/kibana
+  log   [14:33:34.730] [info][plugins-system] Setting up [15] plugins: [code,security,licensing,timelion,features,spaces,translations,eui_utils,uiActions,newsfeed,expressions,data,inspector,embeddable,advancedUiActions]
+  log   [14:33:34.740] [info][code][plugins] Setting up plugin
+  log   [14:33:34.743] [info][plugins][security] Setting up plugin
+  log   [14:33:34.745] [warning][config][plugins][security] Generating a random key for xpack.security.encryptionKey. To prevent sessions from being invalidated on restart, please set xpack.security.encryptionKey in kibana.yml
+  log   [14:33:34.878] [warning][config][plugins][security] Session cookies will be transmitted over insecure connections. This is not recommended.
+  log   [14:33:35.008] [info][licensing][plugins] Setting up plugin
+  log   [14:33:35.069] [info][plugins][timelion] Setting up plugin
+  log   [14:33:35.074] [info][features][plugins] Setting up plugin
+  log   [14:33:35.076] [info][plugins][spaces] Setting up plugin
+  log   [14:33:35.093] [info][plugins][translations] Setting up plugin
+  log   [14:33:35.095] [info][data][plugins] Setting up plugin
+  log   [14:33:35.443] [error][data][elasticsearch] Request error, retrying
+GET http://192.168.80.130:9200/_xpack => connect ECONNREFUSED 192.168.80.130:9200
+  log   [14:34:29.929] [warning][data][elasticsearch] Unable to revive connection: http://192.168.80.130:9200/
+  log   [14:34:29.976] [warning][data][elasticsearch] No living connections
+  log   [14:34:29.979] [warning][licensing][plugins] License information could not be obtained from Elasticsearch for the [data] cluster. Error: No Living connections
+  log   [14:34:37.328] [warning][legacy-plugins] Skipping non-plugin directory at /usr/local/kibana-7.5.1-linux-x86_64/src/legacy/core_plugins/visualizations
+  log   [14:34:43.489] [info][plugins-system] Starting [8] plugins: [code,security,licensing,timelion,features,spaces,translations,data]
+  log   [14:34:45.334] [info][licensing][plugins] Imported changed license information from Elasticsearch for the [data] cluster: type: basic | status: active
+  log   [14:34:45.422] [info][migrations] Creating index .kibana_task_manager_1.
+  log   [14:34:45.917] [info][migrations] Creating index .kibana_1.
+  log   [14:35:16.258] [warning][migrations] Unable to connect to Elasticsearch. Error: Request Timeout after 30000ms
+  log   [14:35:45.530] [warning][migrations] Unable to connect to Elasticsearch. Error: [resource_already_exists_exception] index [.kibana_1/SJxIdZIUQSyfBtQz57lM5w] already exists, with { index_uuid="SJxIdZIUQSyfBtQz57lM5w" & index=".kibana_1" }
+  log   [14:35:46.449] [warning][migrations] Another Kibana instance appears to be migrating the index. Waiting for that migration to complete. If no other Kibana instance is attempting migrations, you can get past this message by deleting index .kibana_1 and restarting Kibana.
+  log   [14:35:52.973] [warning][migrations] Unable to connect to Elasticsearch. Error: [resource_already_exists_exception] index [.kibana_task_manager_1/aVhOfsd7Re21RbxZX78i5w] already exists, with { index_uuid="aVhOfsd7Re21RbxZX78i5w" & index=".kibana_task_manager_1" }
+  log   [14:35:53.379] [warning][migrations] Another Kibana instance appears to be migrating the index. Waiting for that migration to complete. If no other Kibana instance is attempting migrations, you can get past this message by deleting index .kibana_task_manager_1 and restarting Kibana.
+  log   [14:37:03.576] [warning][licensing][plugins] License information could not be obtained from Elasticsearch for the [data] cluster. Error: Request Timeout after 30000ms
+...
+```
+
+### 后台启动
+
+执行`./bin/kibana &`命令进行后台启动
 
 * [参考：ElasticSearch 学习笔记](https://segmentfault.com/a/1190000016651566)
 * [参考：Elasticsearch 7.x 最详细安装及配置](https://segmentfault.com/a/1190000020134018)
