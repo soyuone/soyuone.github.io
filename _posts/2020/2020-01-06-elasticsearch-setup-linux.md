@@ -502,3 +502,4 @@ GET http://192.168.80.130:9200/_xpack => connect ECONNREFUSED 192.168.80.130:920
 * [参考：windows下安装ElasticSearch的Head插件](https://www.cnblogs.com/hts-technology/p/8477258.html)
 * [参考：grunt不是内部或外部命令](https://www.cnblogs.com/xianrongbin/p/6206091.html)
 * [参考：PhantomJS not found on PATH](https://segmentfault.com/a/1190000008996214)
+* [参考：Kibana的安装（Windows版本）](https://blog.csdn.net/weixin_34727238/article/details/81200071)
