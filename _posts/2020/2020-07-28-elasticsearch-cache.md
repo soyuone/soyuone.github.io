@@ -10,33 +10,60 @@ author: Kopite
 {:toc}
 
 
-`Elasticsearch`的检索依赖于相关缓存及缓冲区，本文翻译、总结自官网[Elasticsearch Reference](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/index.html)。
+`Elasticsearch`的检索性能高度依赖于缓存及缓冲区，本文翻译、总结自官网[Elasticsearch Reference](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/index.html)。
 
 
 
 ## 索引模块
 
-索引模块控制与索引相关的设置，这些设置针对所有索引进行全局管理，而不是在每个索引级别进行配置，可进行如下配置：
+索引模块控制与索引相关的配置，这些配置针对所有索引进行全局管理，而不是在每个索引级别进行配置，可能的配置如下：
 * [Circuit breaker](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/circuit-breaker.html)
-* [Fielddata cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/modules-fielddata.html)
-* [Node query cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/query-cache.html)
-* [Indexing buffer](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/indexing-buffer.html)
-* [Shard request cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/shard-request-cache.html)
+* [Fielddata cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/modules-fielddata.html)，设置`fielddata cache`使用的`heap`内存的大小。
+* [Node query cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/query-cache.html)，用于配置缓存查询结果的`heap`内存的大小。
+* [Indexing buffer](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/indexing-buffer.html)，控制`indexing process`（索引过程）缓冲区的大小。
+* [Shard request cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/shard-request-cache.html)，控制分片级请求缓存。
 * [Recovery](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/recovery.html)
 
-### Fielddata
+### Fielddata cache
 
+`field data cache`主要在对字段进行排序或聚合时使用。它将该字段的所有值加载到内存中，以提供基于这些值的快速文档检索。为某一个字段构建`field data cache`的代价可能会很昂贵，因此建议分配给它足够大的内存，使它保持加载状态。
+<br>
+<br>
+可以使用`indices.fielddata.cache.size`来设置`field data cache`的最大值，例如配置为节点`heap`内存的30％，或配置为绝对值，例如12GB；默认值为无界，请参阅[Field data circuit breaker](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/circuit-breaker.html#fielddata-circuit-breaker)。该配置项为静态配置项，须配置在集群中的每个`data node`上。
+<br>
+<br>
+可以通过[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/cluster-nodes-stats.html)来监控`field data`、`field data circuit breaker`的内存使用情况。
 
+### Node query cache
+
+`query cache`主要用于缓存查询结果，每个节点都有一个由所有分片共享的`query cache`。`query cache`采用`LRU`逐出策略：当`query cache`大小被用尽时，会将最近最少使用的数据逐出，以便为新数据腾出空间。无法查看正在被`query cache`所缓存的内容。
+<br>
+<br>
+值得注意的是，`query cache`仅缓存在`filter context`中使用的查询。以下为静态配置项，须配置在集群中的每个`data node`上：
+* `indices.queries.cache.size`，控制`filter cache`的内存大小，默认为10％。该配置项接受百分比值（例如5％）或确切值（例如512mb）。
+
+以下配置项可以基于每个索引进行单独配置：
+* `index.queries.cache.enabled`，控制是否启用查询缓存，接受true（默认值）或false。
 
 ### Indexing Buffer
 
-`Indexing Buffer`用于存储新索引的文档，该缓冲区填满后，其缓冲的文档将被写到磁盘的一个段中，`Indexing Buffer`由在该节点上的所有分片共享。
+`Indexing Buffer`用于存储新索引的文档，当该缓冲区被填满后，缓冲区中的文档将被写到磁盘的一个段中，`Indexing Buffer`由在该节点上的所有分片共享。
 <br>
 <br>
-以下为静态配置，并且必须在集群中的每个`data node`上进行配置：
+以下为静态配置项，须配置在集群中的每个`data node`上：
 * `indices.memory.index_buffer_size`，接受百分比或字节大小的值，默认值为该节点`heap`内存大小的10％，由该节点上的所有分片共享。
 * `indices.memory.min_index_buffer_size`，如果`index_buffer_size`设置为百分比，则此参数可用于指定绝对最小值，默认为48mb。
 * `indices.memory.max_index_buffer_size`，如果`index_buffer_size`指定为百分比，则此参数可用于指定绝对最大值，默认为无界。
+
+### Shard request cache
+
+当对一个索引或多个索引进行检索时，所涉及的每个分片都将在本地进行检索，并将其本地检索结果返回给`coordinating node`，该节点会将这些分片级的检索结果合并为一个结果集。
+<br>
+<br>
+`shard-level request cache`对每个分片缓存本地检索结果，允许频繁的进行搜索请求，而且返回检索结果及其迅速。该缓存非常适合用于检索日志记录，在这种情形下，只有最新索引才被主动更新——较旧索引中的检索结果将直接从`shard-level request cache`中获取。
+<br>
+<br>
+默认情况下，`shard-level request cache`将仅缓存`size = 0`时的检索请求结果，因此不会缓存`hits`，但会缓存`hits.total`、`aggregations`、`suggestions`。
 
 
 
