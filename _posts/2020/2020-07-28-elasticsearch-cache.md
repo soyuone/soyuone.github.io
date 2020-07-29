@@ -20,7 +20,7 @@ author: Kopite
 * [Circuit breaker](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/circuit-breaker.html)
 * [Fielddata cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/modules-fielddata.html)，设置`fielddata cache`使用的`heap`内存的大小。
 * [Node query cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/query-cache.html)，用于配置缓存查询结果的`heap`内存的大小。
-* [Indexing buffer](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/indexing-buffer.html)，控制`indexing process`（索引过程）缓冲区的大小。
+* [Indexing buffer](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/indexing-buffer.html)，控制`indexing process`（索引过程）所占缓冲区的大小。
 * [Shard request cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/shard-request-cache.html)，控制分片级请求缓存。
 * [Recovery](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/recovery.html)
 

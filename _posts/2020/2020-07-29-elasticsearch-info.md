@@ -10,7 +10,7 @@ author: Kopite
 {:toc}
 
 
-`Elasticsearch`的检索依赖于相关缓存及缓冲区，本文翻译、总结自官网[Elasticsearch Reference](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/index.html)。
+本文中的`Elasticsearch`概述等相关内容翻译、总结自官网[Elasticsearch Reference](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/index.html)。
 
 
 
@@ -18,7 +18,7 @@ author: Kopite
 
 启动一个`Elasticsearch`实例即启动一个`Elasticsearch`节点，相连接节点的集合称为`Elasticsearch`集群，另外每个节点都有一个或多个角色：
 * `Master-eligible node`，`node.master`设置为`true`（默认值）会将节点设置为候选主节点，主节点用于控制集群。
-* 
+* `Data node`，`node.data`设置为true（默认值）会将节点设置为数据节点，数据节点保存数据并执行与数据有关的操作，例如CRUD、检索和聚合。
 
 
 ### Master-eligible node
@@ -40,6 +40,14 @@ search.remote.connect: false
 
 #### 避免脑裂
 
+为避免脑裂现象，组成集群时的可用`discovery.zen.minimum_master_nodes`数量需要大于等于`(master_eligible_nodes / 2) + 1`，该配置项默认值为1。
+<br>
+<br>
+在专用节点之间划分`master-eligible node`角色和`data node`角色的优点之一是，可以只有三个`master-eligible node`，并将`minimum_master_nodes`设置为2，之后无论将多少个专用`data node`添加到集群，都不必更改此配置。
+
+### Data node
+
+数据节点包含包含您已建立索引的文档的分片。数据节点处理与数据相关的操作，例如CRUD，搜索和聚合。这些操作是I / O，内存和CPU密集型的。监视这些资源并在过载时添加更多数据节点非常重要。
 
 
 索引模块控制与索引相关的设置，这些设置针对所有索引进行全局管理，而不是在每个索引级别进行配置，可进行如下配置：
