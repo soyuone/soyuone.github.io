@@ -17,12 +17,32 @@ author: Kopite
 ## 索引模块
 
 索引模块控制与索引相关的配置，这些配置针对所有索引进行全局管理，而不是在每个索引级别进行配置，可能的配置如下：
-* [Circuit breaker](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/circuit-breaker.html)
+* [Circuit breaker](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/circuit-breaker.html)，`Circuit breakers`对内存使用情况进行了限制，以避免内存不足异常。
 * [Fielddata cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/modules-fielddata.html)，设置`fielddata cache`使用的`heap`内存的大小。
 * [Node query cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/query-cache.html)，用于配置缓存查询结果的`heap`内存的大小。
 * [Indexing buffer](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/indexing-buffer.html)，控制`indexing process`（索引过程）所占缓冲区的大小。
 * [Shard request cache](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/shard-request-cache.html)，控制分片级请求缓存。
 * [Recovery](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/recovery.html)
+
+### Circuit Breaker
+
+`Elasticsearch`中有多个`Circuit breakers`——断路器，防止操作引起`OutOfMemoryError`。每个断路器都指定了内存使用量的限制，此外，还有一个父级断路器——用于指定全部断路器可以使用的内存总量。
+<br>
+<br>
+可以使用`cluster-update-settings` API来动态修改以下配置：
+
+1.使用以下配置项来配置父级断路器：
+* `indices.breaker.total.limit`，用来设置父级断路器的起始限制，默认为`JVM heap`的70％。
+
+2.`field data`断路器会评估将一个`field`加载到内存所使用的内存大小，它可以通过引发异常来阻止加载`field data`。默认限制为最大`JVM heap`的60％，可以使用以下参数进行配置：
+* `indices.breaker.fielddata.limit`，用来设置`fielddata`断路器的内存使用限制，默认为`JVM heap`的60％。
+* `indices.breaker.fielddata.overhead`，A constant that all field data estimations are multiplied with to determine a final estimation. Defaults to 1.03.
+
+3.`request`断路器可以阻止`per-request`的数据结构超过内存限制：
+* `indices.breaker.request.limit`，`request`中断的限制，默认为`JVM heap`的60％。
+* `indices.breaker.request.overhead`，A constant that all request estimations are multiplied with to determine a final estimation. Defaults to 1.
+
+
 
 ### Fielddata cache
 

@@ -19,7 +19,10 @@ author: Kopite
 启动一个`Elasticsearch`实例即启动一个`Elasticsearch`节点，相连接节点的集合称为`Elasticsearch`集群，另外每个节点都有一个或多个角色：
 * `Master-eligible node`，`node.master`设置为`true`（默认值）会将节点设置为候选主节点，主节点用于控制集群。
 * `Data node`，`node.data`设置为true（默认值）会将节点设置为数据节点，数据节点保存数据并执行与数据有关的操作，例如CRUD、检索和聚合。
+* `Ingest node`，`node.ingest`设置为true（默认值）会将节点设置为`ingest node`。`ingest node`能够将[ingest pipeline](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/pipeline.html)应用于文档，以便在建立索引之前转换和丰富文档。在繁重的`ingest`负载下，最好使用`dedicated ingest nodes`并将`master`节点、`data`节点配置为`node.ingest：false`。
+* `Tribe node`，通过tribe。*设置配置的部落节点是仅协调节点的一种特殊类型，它可以连接到多个集群并在所有连接的集群中执行搜索和其他操作。
 
+默认情况下，一个节点是一个符合资格的主节点和一个数据节点，此外，它还可以通过摄取管道对文档进行预处理。这对于小型集群非常方便，但是随着集群的增长，考虑将专用于主机的专用节点与专用数据节点分离就变得很重要。
 
 ### Master-eligible node
 
@@ -29,7 +32,7 @@ author: Kopite
 索引和搜索文档会占用大量`CPU`、`内存`和`I/O`，这可能给节点的资源带来压力。为确保`master node`稳定且不受压力，在较大的集群中，最好将`master-eligible node`和专用`data node`分开。
 <br>
 <br>
-虽然`master node`还可以充当`coordinating nodes`，并将搜索和索引请求从客户端路由到`data node`，但最好不要基于此目的而使用`master node`。对于`master-eligible node`，其工作量应尽可能少，这对于集群的稳定性很重要。创建专用的`master-eligible node`，需要做如下配置：
+虽然`master node`还可以充当`coordinating nodes`，并将搜索和索引请求从客户端路由到`data node`，但最好不要基于此目的而使用`master node`。对于`master-eligible node`，其工作量应尽可能少，这对于集群的稳定性很重要。创建`dedicated master-eligible node`，需要做如下配置：
 
 ```
 node.master: true 
@@ -43,11 +46,26 @@ search.remote.connect: false
 为避免脑裂现象，组成集群时的可用`discovery.zen.minimum_master_nodes`数量需要大于等于`(master_eligible_nodes / 2) + 1`，该配置项默认值为1。
 <br>
 <br>
-在专用节点之间划分`master-eligible node`角色和`data node`角色的优点之一是，可以只有三个`master-eligible node`，并将`minimum_master_nodes`设置为2，之后无论将多少个专用`data node`添加到集群，都不必更改此配置。
+在专用节点之间划分`master-eligible node`角色和`data node`角色的优点之一是，可以只有三个`master-eligible node`，并将`minimum_master_nodes`设置为2，之后无论将多少个专用`data node`添加到集群，都不必再更改此配置。
 
 ### Data node
 
-数据节点包含包含您已建立索引的文档的分片。数据节点处理与数据相关的操作，例如CRUD，搜索和聚合。这些操作是I / O，内存和CPU密集型的。监视这些资源并在过载时添加更多数据节点非常重要。
+`data node`存放索引分片，并处理与数据相关的操作，例如`CRUD`，搜索和聚合。这些操作会占用`I/O`，`内存`和`CPU`，监视这些资源的占用情况并在过载时添加更多的`data node`非常重要。
+<br>
+<br>
+设置`dedicated data nodes`的主要好处是将`master`角色和`data`角色分开，创建`dedicated data node`需要做如下配置：
+
+```
+node.master: false 
+node.data: true 
+node.ingest: false 
+search.remote.connect: false 
+```
+
+### Ingest Node
+
+在实际文档建立索引之前，请使用摄取节点对文档进行预处理。接收节点拦截批量和索引请求，应用转换，然后将文档传递回索引或批量API。
+
 
 
 索引模块控制与索引相关的设置，这些设置针对所有索引进行全局管理，而不是在每个索引级别进行配置，可进行如下配置：
